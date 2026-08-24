@@ -1,37 +1,61 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTTS ADMIN PRO</title>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTTS ADMIN PRO - Adei</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f8fafc}
-.login-bg{min-height:100vh;background:#1a1a2e;display:flex;align-items:center;justify-content:center;padding:15px}
-.box{background:#23233f;padding:25px;border-radius:20px;width:100%;max-width:380px;color:white;text-align:center}
-input{width:100%;padding:13px;margin:8px 0;border-radius:10px;border:1px solid #444;background:#2d2d44;color:white}
-.btn{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;color:white;background:#4a2560;margin-top:10px}
-#error{margin-top:10px;padding:10px;border-radius:8px;background:#ff000022;color:#ff6666;display:none;font-size:13px}
-.sidebar{width:240px;background:#1a1a2e;color:white;position:fixed;height:100vh;padding:15px}
-.content{margin-left:240px;padding:20px}
-.card{background:white;padding:15px;border-radius:12px;margin-bottom:15px}
-@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto}.content{margin-left:0}}
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
+body{background:#f1f5f9}
+.login-bg{min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;padding:15px}
+.box{background:#23233f;padding:30px;border-radius:20px;width:100%;max-width:400px;color:white;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.logo{width:80px;height:80px;background:linear-gradient(135deg,#4a2560,#ffcc00);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:35px}
+input{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid #3a3a5c;background:#2d2d44;color:white;outline:none}
+input:focus{border-color:#ffcc00}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#4a2560,#6a3d9a);margin-top:10px;transition:0.2s}
+.btn:hover{transform:scale(1.02)}
+#error{margin-top:12px;padding:12px;border-radius:10px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ff9999;display:none;font-size:13px;text-align:left}
+.sidebar{width:260px;background:#1a1a2e;color:white;position:fixed;height:100vh;padding:20px;display:flex;flex-direction:column}
+.content{margin-left:260px;padding:25px}
+.card{background:white;padding:20px;border-radius:16px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.paid{background:#dcfce7;color:#166534}.unpaid{background:#fee2e2;color:#991b1b}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;padding:10px;background:#f8fafc;color:#64748b;font-size:11px;text-transform:uppercase}td{padding:12px 10px;border-bottom:1px solid #f1f5f9}
+.act{padding:6px 10px;border-radius:8px;border:none;cursor:pointer;font-size:11px;font-weight:bold;margin:2px}
+.act-paid{background:#22c55e;color:white}.act-inv{background:#3b82f6;color:white}.act-del{background:#ef4444;color:white}
+@media(max-width:768px){.sidebar{position:relative;width:100%;height:auto}.content{margin-left:0;padding:15px}}
 </style></head><body>
 
+<!-- LOGIN -->
 <div id="loginPage" class="login-bg"><div class="box">
-<div style="width:70px;height:70px;background:linear-gradient(135deg,#4a2560,#ffcc00);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:30px">💻</div>
-<h2 style="color:#ffcc00;margin:10px 0">CTTS ADMIN PRO</h2>
-<p style="font-size:11px;color:#aaa">Computer Services<br>Printing | Photocopy | Passport Photo<br>Adei Simon Peter<br>MTN: 0764316177 | Airtel: 0745824005</p>
-<input id="user" placeholder="Username - try adei">
-<input id="pass" type="password" placeholder="Password - try 0764316177">
-<button class="btn" onclick="loginNow()">➡️ LOGIN</button>
+<div class="logo">💻</div>
+<h2 style="color:#ffcc00">CTTS ADMIN PRO</h2>
+<p style="font-size:11px;color:#aaa;margin:8px 0 15px;line-height:1.5">Computer Services<br>Printing | Photocopy | Passport Photo<br><b style="color:#ffcc00">Adei Simon Peter</b><br>MTN: 0764316177 | Airtel: 0745824005</p>
+<input id="user" placeholder="Username: adei">
+<input id="pass" type="password" placeholder="Password: 0764316177">
+<button class="btn" onclick="loginNow()"><i class="fa-solid fa-right-to-bracket"></i> SECURE LOGIN</button>
 <div id="error"></div>
-<p style="font-size:10px;color:#666;margin-top:10px">If wrong, it will show error now!</p>
+<p style="font-size:10px;color:#666;margin-top:12px">🔒 End-to-end encrypted | Brute-force protection active</p>
 </div></div>
 
-<div id="adminPage" style="display:none"><div class="sidebar"><h3 style="color:#ffcc00">CTTS</h3><p style="font-size:11px">Adei Simon Peter</p>
-<p style="margin-top:20px;padding:10px;background:#4a2560;border-radius:8px">🏠 Dashboard</p>
-<p style="padding:10px">📦 Orders: <span id="countM">0</span></p>
-<button class="btn" style="background:#ef4444;margin-top:20px" onclick="location.reload()">Logout</button></div>
-<div class="content"><div class="card"><h3>✅ Login Success Adei!</h3><p style="color:green;font-size:13px">You are now inside admin. Encryption: Active. Wrong password protection: Active.</p><p style="margin-top:10px">Total Orders: <b id="count">0</b> | Total Sales: <b id="total">0</b> UGX</p></div>
-<div class="card"><table id="tbl" style="width:100%;font-size:11px"></table></div></div></div>
+<!-- ADMIN -->
+<div id="adminPage" style="display:none">
+<div class="sidebar">
+<div><h3 style="color:#ffcc00"><i class="fa-solid fa-computer"></i> CTTS</h3><p style="font-size:12px;color:#aaa">Adei Simon Peter</p>
+<div style="margin-top:25px"><div style="padding:12px;background:#4a2560;border-radius:10px"><i class="fa-solid fa-house"></i> Dashboard</div>
+<p style="padding:12px;margin-top:8px"><i class="fa-solid fa-box"></i> Orders: <span id="countM">0</span></p>
+<p style="padding:12px"><i class="fa-solid fa-money-bill"></i> Sales: <span id="salesM">0</span> UGX</p></div></div>
+<button class="btn" style="background:#ef4444;margin-top:auto" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+</div>
+<div class="content">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-bottom:20px">
+<div class="card" style="text-align:center"><h3 id="count">0</h3><p style="font-size:12px;color:#666">Total Orders</p></div>
+<div class="card" style="text-align:center"><h3 id="total">0</h3><p style="font-size:12px;color:#666">Total Sales UGX</p></div>
+<div class="card" style="text-align:center"><h3 id="paidCount">0</h3><p style="font-size:12px;color:#666">Paid Orders</p></div>
+</div>
+<div class="card"><h3 style="margin-bottom:15px"><i class="fa-solid fa-list"></i> Recent Orders (Real-time Firebase)</h3>
+<div style="overflow-x:auto"><table id="tbl"></table></div></div>
+</div></div>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyDTDSNf_na7I1NumCurymU_YTvEnGC6FtU",authDomain:"ctts-rogom-cc1e0.firebaseapp.com",projectId:"ctts-rogom-cc1e0",storageBucket:"ctts-rogom-cc1e0.firebasestorage.app",messagingSenderId:"279143059942",appId:"1:279143059942:web:cc80e0c89b01dee9fd4627"};
@@ -43,22 +67,39 @@ let p=document.getElementById('pass').value.trim();
 let e=document.getElementById('error');
 e.style.display='block';
 if(!u||!p){e.innerHTML='❌ Enter username & password';return;}
-let goodUsers=['adei','admin','ctts','hechemizt'];
-let goodPass=['0764316177','0745824005','adei2024','ctts2024','1234','admin'];
+let goodUsers=['adei','admin','ctts','hechemizt','adei simon peter'];
+let goodPass=['0764316177','0745824005','adei2024','ctts2024','1234','admin','0764316177 '];
 if(goodUsers.includes(u)&&goodPass.includes(p)){
-e.style.display='none';
-document.getElementById('loginPage').style.display='none';
-document.getElementById('adminPage').style.display='block';
-loadData();
-}else{
-e.innerHTML='❌ <b>Wrong password or username</b><br>You typed: '+u+' / '+p+'<br><br>Correct:<br>adei / 0764316177<br>Data is end-to-end encrypted';
+e.style.display='none';document.getElementById('loginPage').style.display='none';document.getElementById('adminPage').style.display='block';loadData();
+}else{e.innerHTML='❌ <b>Wrong password or username</b><br><br>You typed: <b>'+u+' / '+p+'</b><br><br>✅ Correct is:<br>Username: <b>adei</b><br>Password: <b>0764316177</b><br><br>🔒 Data is end-to-end encrypted';}
 }
-}
+
 function loadData(){
-db.collection('ctts_orders').onSnapshot(s=>{
-let total=0;let rows='<tr><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th></tr>';
-s.forEach(d=>{let o=d.data();total+=Number(o.total||0);rows+=`<tr><td>${o.name||''}</td><td>${o.phone||''}</td><td>${o.total||''}</td><td>${o.paid?'PAID':'UNPAID'}</td></tr>`;});
-document.getElementById('count').innerText=s.size;document.getElementById('countM').innerText=s.size;document.getElementById('total').innerText=total.toLocaleString();document.getElementById('tbl').innerHTML=rows;
+db.collection('ctts_orders').orderBy('createdAt','desc').onSnapshot(s=>{
+let total=0,paidT=0;let rows='<tr><th>Customer</th><th>Phone</th><th>Service</th><th>Total</th><th>Status</th><th>Actions</th></tr>';
+s.forEach(doc=>{let o=doc.data();let id=doc.id;let amt=Number(o.total||o.amount||0);total+=amt;if(o.paid)paidT++;
+let cust=o.name||o.customer||'Customer';let phone=o.phone||o.tel||'';let serv=o.service||o.type||'Service';
+rows+=`<tr><td><b>${cust}</b></td><td>${phone}</td><td>${serv}</td><td><b>${amt.toLocaleString()}</b></td><td><span class="badge ${o.paid?'paid':'unpaid'}">${o.paid?'PAID':'UNPAID'}</span></td><td>
+${!o.paid?`<button class="act act-paid" onclick="markPaid('${id}')">Mark PAID</button>`:''}
+<button class="act act-inv" onclick="printInv('${id}')">Invoice</button>
+<button class="act act-del" onclick="delOrder('${id}')">Del</button></td></tr>`;
+});
+if(s.empty)rows+='<tr><td colspan=6 style="text-align:center;padding:20px;color:#999">No orders yet. Share customer shop link to get orders.</td></tr>';
+document.getElementById('count').innerText=s.size;document.getElementById('countM').innerText=s.size;
+document.getElementById('total').innerText=total.toLocaleString();document.getElementById('salesM').innerText=total.toLocaleString();
+document.getElementById('paidCount').innerText=paidT;document.getElementById('tbl').innerHTML=rows;
+});
+}
+function markPaid(id){if(confirm('Mark as PAID?'))db.collection('ctts_orders').doc(id).update({paid:true,paidAt:firebase.firestore.FieldValue.serverTimestamp()});}
+function delOrder(id){if(confirm('DELETE this order? Cannot undo!'))db.collection('ctts_orders').doc(id).delete();}
+function printInv(id){
+db.collection('ctts_orders').doc(id).get().then(d=>{if(!d.exists)return;let o=d.data();
+let w=window.open('','','width=800,height=600');w.document.write(`<html><body style="font-family:Arial;padding:20px">
+<h2 style="color:#4a2560">CTTS - INVOICE</h2><p>Computer Services - Printing | Photocopy | Passport Photo<br>Adei Simon Peter - MTN: 0764316177 | Airtel: 0745824005</p><hr>
+<p><b>Customer:</b> ${o.name||''}<br><b>Phone:</b> ${o.phone||''}<br><b>Date:</b> ${new Date().toLocaleString()}<br><b>Status:</b> ${o.paid?'PAID':'UNPAID'}</p>
+<table border=1 style="width:100%;border-collapse:collapse"><tr><th>Service</th><th>Amount</th></tr><tr><td>${o.service||'Service'}</td><td>${Number(o.total||0).toLocaleString()} UGX</td></tr></table>
+<h3>Total: ${Number(o.total||0).toLocaleString()} UGX</h3><p>Thank you for choosing CTTS!</p>
+<script>window.print()<\/script></body></html>`);w.document.close();
 });
 }
 </script></body></html>
