@@ -1,93 +1,201 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTTS PRO</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTTS PRO V3</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>body{font-family:Arial}</style></head><body class="bg-[#f5f7fb]">
+</head><body class="bg-[#f5f7fb]">
 
+<!-- LOGIN + REGISTER -->
 <div id="loginPage" class="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] flex items-center justify-center p-4">
 <div class="w-full max-w-5xl grid md:grid-cols-2 bg-white rounded-[24px] overflow-hidden shadow-2xl">
-<div class="bg-gradient-to-br from-[#1a1a2e] to-[#4a2560] p-10 text-white">
-<div class="w-16 h-16 bg-gradient-to-br from-[#ffcc00] to-[#ff8a00] rounded-2xl flex items-center justify-center text-3xl mb-6">💻</div>
-<h1 class="text-3xl font-bold">CTTS</h1><p class="text-[#ffcc00]">Computer Tech & Stationery</p>
-<p class="mt-8 text-sm opacity-80">Printing | Photocopy | Passport Photo<br>Stationery | Computer Services<br><br><b>Adei Simon Peter</b><br>MTN: 0764316177</p>
+<div class="bg-gradient-to-br from-[#1a1a2e] to-[#4a2560] p-10 text-white flex flex-col justify-between">
+<div><div class="w-16 h-16 bg-gradient-to-br from-[#ffcc00] to-[#ff8a00] rounded-2xl flex items-center justify-center text-3xl mb-6">💻</div>
+<h1 class="text-3xl font-bold">CTTS</h1><p class="text-[#ffcc00] font-semibold">Computer Tech & Stationery</p>
+<div class="mt-8 space-y-2 text-sm opacity-90">
+<p><i class="fa-solid fa-check w-6"></i> Customer Registration Required</p>
+<p><i class="fa-solid fa-check w-6"></i> Secure Login</p>
+<p><i class="fa-solid fa-check w-6"></i> Real-time Order Tracking</p>
 </div>
-<div class="p-10">
-<h2 class="text-2xl font-bold">Welcome Back</h2>
-<div class="grid grid-cols-3 gap-2 my-6">
-<button onclick="setRole('admin')" id="rAdmin" class="border-2 border-[#4a2560] bg-[#4a2560] text-white p-3 rounded-xl text-xs font-bold">ADMIN</button>
-<button onclick="setRole('staff')" id="rStaff" class="border-2 border-gray-200 p-3 rounded-xl text-xs font-bold text-gray-600">STAFF</button>
-<button onclick="setRole('customer')" id="rCust" class="border-2 border-gray-200 p-3 rounded-xl text-xs font-bold text-gray-600">CUSTOMER</button>
+<div class="mt-8 p-3 bg-white/10 rounded-xl">
+<p class="text-xs font-bold mb-2">CONTACT US:</p>
+<div class="grid grid-cols-2 gap-2 text-[11px]">
+<a href="tel:0764316177" class="bg-green-500/20 p-2 rounded-lg text-center"><i class="fa-solid fa-phone"></i> Call</a>
+<a href="https://wa.me/256764316177" target="_blank" class="bg-green-500 p-2 rounded-lg text-center text-white"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+<a href="sms:0764316177" class="bg-blue-500/20 p-2 rounded-lg text-center"><i class="fa-solid fa-message"></i> SMS</a>
+<a href="mailto:ctts.rogom@gmail.com" class="bg-yellow-500/20 p-2 rounded-lg text-center"><i class="fa-solid fa-envelope"></i> Email</a>
+</div></div>
+</div><p class="text-[10px] opacity-60"><b>Adei Simon Peter</b> | MTN:0764316177 | Airtel:0745824005</p>
 </div>
-<input id="user" class="w-full p-3.5 border rounded-xl mb-3" placeholder="Username">
-<input id="pass" type="password" class="w-full p-3.5 border rounded-xl mb-3" placeholder="Password">
-<button onclick="loginNow()" class="w-full bg-[#4a2560] text-white p-3.5 rounded-xl font-bold">LOGIN SECURELY</button>
-<div id="error" class="hidden mt-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm"></div>
-<p class="mt-4 text-[11px] text-gray-400">Admin: adei / 0764316177<br>Staff: staff1 / 1234<br>Customer: any name</p>
+
+<div class="p-8">
+<div id="loginForm">
+<h2 class="text-2xl font-bold">Welcome</h2><p class="text-sm text-gray-500 mb-4">Login to continue</p>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<button onclick="setRole('admin')" id="rAdmin" class="border-2 border-[#4a2560] bg-[#4a2560] text-white p-2.5 rounded-xl text-[11px] font-bold">ADMIN</button>
+<button onclick="setRole('staff')" id="rStaff" class="border-2 border-gray-200 p-2.5 rounded-xl text-[11px] font-bold">STAFF</button>
+<button onclick="setRole('customer')" id="rCust" class="border-2 border-gray-200 p-2.5 rounded-xl text-[11px] font-bold">CUSTOMER</button>
+</div>
+<input id="user" class="w-full p-3 border rounded-xl mb-2 text-sm" placeholder="Username / Phone">
+<input id="pass" type="password" class="w-full p-3 border rounded-xl mb-3 text-sm" placeholder="Password">
+<button onclick="loginNow()" class="w-full bg-[#4a2560] text-white p-3 rounded-xl font-bold">LOGIN</button>
+<p id="toRegister" class="text-center text-sm mt-3">Customer? <button onclick="showRegister()" class="text-[#4a2560] font-bold underline">Register Here</button></p>
+<div id="error" class="hidden mt-3 p-2 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl"></div>
+<p class="mt-3 text-[10px] text-gray-400">Admin: adei / 0764316177 | Staff: staff1 / 1234</p>
+</div>
+
+<div id="registerForm" class="hidden">
+<h2 class="text-xl font-bold">Customer Registration</h2><p class="text-xs text-gray-500 mb-4">Create account to order & track</p>
+<input id="regName" class="w-full p-3 border rounded-xl mb-2 text-sm" placeholder="Full Name">
+<input id="regPhone" class="w-full p-3 border rounded-xl mb-2 text-sm" placeholder="Phone e.g. 0764316177">
+<input id="regEmail" class="w-full p-3 border rounded-xl mb-2 text-sm" placeholder="Email (optional)">
+<input id="regUser" class="w-full p-3 border rounded-xl mb-2 text-sm" placeholder="Choose Username">
+<input id="regPass" type="password" class="w-full p-3 border rounded-xl mb-3 text-sm" placeholder="Choose Password">
+<button onclick="registerNow()" class="w-full bg-[#ffcc00] text-black p-3 rounded-xl font-bold">REGISTER NOW</button>
+<p class="text-center text-sm mt-3">Already have account? <button onclick="showLogin()" class="font-bold underline">Login</button></p>
+<div id="regError" class="hidden mt-3 p-2 bg-red-50 text-red-600 text-xs rounded-xl"></div>
+</div>
 </div></div></div>
 
-<div id="appPage" class="hidden min-h-screen flex">
-<div class="w-72 bg-[#111122] text-white flex flex-col fixed h-screen">
-<div class="p-6 border-b border-white/10"><h2 class="font-bold">CTTS PRO</h2><p id="roleLabel" class="text-[10px] text-gray-400">ADMIN</p></div>
-<div id="sidebarMenu" class="flex-1 p-4 space-y-1"></div>
-<div class="p-4 border-t border-white/10"><button onclick="location.reload()" class="w-full bg-red-500/10 text-red-400 p-3 rounded-xl text-sm border border-red-500/20">Logout</button></div>
+<!-- APP -->
+<div id="appPage" class="hidden min-h-screen">
+<div id="sidebar" class="w-72 bg-[#111122] text-white flex flex-col fixed h-screen z-20 transition-all">
+<div class="p-5 border-b border-white/10 flex justify-between items-center">
+<div class="flex gap-3 items-center"><div class="w-10 h-10 bg-gradient-to-br from-[#ffcc00] to-[#ff8a00] rounded-xl flex items-center justify-center">💻</div><div><h2 class="font-bold text-sm">CTTS PRO</h2><p id="roleLabel" class="text-[10px] text-gray-400">ADMIN</p></div></div>
+<button onclick="toggleMenu()" class="md:hidden bg-white/10 p-2 rounded-lg"><i class="fa-solid fa-xmark"></i></button>
 </div>
-<div class="flex-1 ml-72 p-6">
-<h1 id="pageTitle" class="text-2xl font-bold mb-6">Dashboard</h1>
-<div id="mainContent"></div>
+<div id="sidebarMenu" class="flex-1 p-4 space-y-1 overflow-y-auto"></div>
+<div class="p-4 border-t border-white/10"><div class="bg-white/5 p-3 rounded-xl mb-3"><p class="text-[11px] font-bold">Quick Contact</p><div class="grid grid-cols-4 gap-1 mt-2">
+<a href="tel:0764316177" class="bg-green-600 p-2 rounded-lg text-center text-xs"><i class="fa-solid fa-phone"></i></a>
+<a href="https://wa.me/256764316177" target="_blank" class="bg-green-500 p-2 rounded-lg text-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="sms:0764316177" class="bg-blue-600 p-2 rounded-lg text-center text-xs"><i class="fa-solid fa-message"></i></a>
+<a href="mailto:ctts.rogom@gmail.com" class="bg-yellow-600 p-2 rounded-lg text-center text-xs"><i class="fa-solid fa-envelope"></i></a>
+</div></div><button onclick="location.reload()" class="w-full bg-red-500/10 text-red-400 p-3 rounded-xl text-sm border border-red-500/20">Logout</button></div>
+</div>
+
+<div class="flex-1 md:ml-72">
+<div class="bg-white border-b p-4 flex justify-between items-center sticky top-0 z-10">
+<button onclick="toggleMenu()" class="bg-gray-100 p-2.5 rounded-xl"><i class="fa-solid fa-bars"></i></button>
+<h1 id="pageTitle" class="font-bold">Dashboard</h1>
+<div class="flex items-center gap-2"><span id="userBadge" class="bg-gray-100 px-3 py-1.5 rounded-full text-xs font-bold">adei</span><button onclick="alert('Change password: Contact Admin Adei')" class="bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-key text-xs"></i></button></div>
+</div>
+<div id="mainContent" class="p-6"></div>
 </div></div>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyDTDSNf_na7I1NumCurymU_YTvEnGC6FtU",authDomain:"ctts-rogom-cc1e0.firebaseapp.com",projectId:"ctts-rogom-cc1e0",storageBucket:"ctts-rogom-cc1e0.firebasestorage.app",messagingSenderId:"279143059942",appId:"1:279143059942:web:cc80e0c89b01dee9fd4627"};
 firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
-let currentRole='admin',currentUser='',cart=[];
+let currentRole='admin',currentUser='',cart=[],sidebarOpen=false;
 
-function setRole(r){currentRole=r;document.querySelectorAll('[id^=r]').forEach(b=>b.className='border-2 border-gray-200 p-3 rounded-xl text-xs font-bold text-gray-600');document.getElementById(r=='admin'?'rAdmin':r=='staff'?'rStaff':'rCust').className='border-2 border-[#4a2560] bg-[#4a2560] text-white p-3 rounded-xl text-xs font-bold';}
+function toggleMenu(){let s=document.getElementById('sidebar');if(window.innerWidth<768){s.classList.toggle('-translate-x-full');} }
+function setRole(r){currentRole=r;document.querySelectorAll('[id^=r]').forEach(b=>b.className='border-2 border-gray-200 p-2.5 rounded-xl text-[11px] font-bold');document.getElementById(r=='admin'?'rAdmin':r=='staff'?'rStaff':'rCust').className='border-2 border-[#4a2560] bg-[#4a2560] text-white p-2.5 rounded-xl text-[11px] font-bold';document.getElementById('toRegister').style.display=r=='customer'?'block':'none';}
+function showRegister(){document.getElementById('loginForm').classList.add('hidden');document.getElementById('registerForm').classList.remove('hidden');}
+function showLogin(){document.getElementById('registerForm').classList.add('hidden');document.getElementById('loginForm').classList.remove('hidden');}
+
+function registerNow(){
+let name=document.getElementById('regName').value.trim(),phone=document.getElementById('regPhone').value.trim(),email=document.getElementById('regEmail').value.trim(),user=document.getElementById('regUser').value.trim().toLowerCase(),pass=document.getElementById('regPass').value.trim(),e=document.getElementById('regError');
+if(!name||!phone||!user||!pass){e.classList.remove('hidden');e.innerHTML='Fill all required fields';return;}
+db.collection('ctts_customers').where('username','==',user).get().then(s=>{
+if(!s.empty){e.classList.remove('hidden');e.innerHTML='Username already taken! Choose another.';return;}
+db.collection('ctts_customers').add({name,phone,email,username:user,password:pass,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Registration Success! Now login as CUSTOMER with your username: '+user);showLogin();document.getElementById('user').value=user;});
+});
+}
 
 function loginNow(){
-let u=document.getElementById('user').value.trim().toLowerCase(),p=document.getElementById('pass').value.trim(),e=document.getElementById('error');
-if(!u||!p){e.classList.remove('hidden');e.innerHTML='Enter username & password';return;}
-let admins={adei:'0764316177',admin:'0745824005',ctts:'ctts2024'};
-let staffs={staff1:'1234',staff2:'1234'};
-let ok=false;
-if(currentRole=='admin' && admins[u]==p) ok=true;
-if(currentRole=='staff' && (staffs[u]==p || admins[u]==p)) ok=true;
-if(currentRole=='customer') ok=true;
-if(!ok && currentRole!='customer'){e.classList.remove('hidden');e.innerHTML='❌ Wrong password or username for '+currentRole.toUpperCase()+'<br>Admin: adei / 0764316177<br>Staff: staff1 / 1234';return;}
-currentUser=u;document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('appPage').classList.add('flex');document.getElementById('roleLabel').innerText=currentRole.toUpperCase();buildSidebar();showPage(currentRole=='customer'?'shop':'dashboard');
+let u=document.getElementById('user').value.trim().toLowerCase(),p=document.getElementById('pass').value.trim(),err=document.getElementById('error');
+if(!u||!p){err.classList.remove('hidden');err.innerHTML='Enter username & password';return;}
+if(currentRole=='admin'){
+let admins={adei:'0764316177',admin:'0745824005',ctts:'ctts2024',hechemizt:'0764316177'};
+if(admins[u]==p){currentUser=u;openApp();}else{err.classList.remove('hidden');err.innerHTML='❌ Wrong password or username for ADMIN<br>Use: adei / 0764316177';}
+}else if(currentRole=='staff'){
+let staffs={staff1:'1234',staff2:'1234'};let admins={adei:'0764316177'};
+if(staffs[u]==p || admins[u]==p){currentUser=u;openApp();}else{err.classList.remove('hidden');err.innerHTML='❌ Wrong password for STAFF<br>Try staff1 / 1234';}
+}else{
+// CUSTOMER LOGIN - Check Firebase
+db.collection('ctts_customers').where('username','==',u).where('password','==',p).get().then(s=>{
+if(!s.empty){let d=s.docs[0].data();currentUser=d.username;localStorage.setItem('custPhone',d.phone);localStorage.setItem('custName',d.name);openApp();}
+else{err.classList.remove('hidden');err.innerHTML='❌ Wrong customer login<br>Please Register first if new.<br>If you registered, check username/password';}
+});
 }
+}
+
+function openApp(){document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('appPage').classList.add('flex');document.getElementById('roleLabel').innerText=currentRole.toUpperCase();document.getElementById('userBadge').innerText=currentUser;buildSidebar();showPage(currentRole=='customer'?'shop':'dashboard');}
 
 function buildSidebar(){
 let m=document.getElementById('sidebarMenu'),html='';
-if(currentRole=='admin') html=`<button onclick="showPage('dashboard')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-chart-line w-6"></i> Dashboard</button><button onclick="showPage('orders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-box w-6"></i> Orders</button><button onclick="showPage('products')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-store w-6"></i> Goods & Services</button><button onclick="showPage('staff')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-users w-6"></i> Staff</button><button onclick="showPage('payments')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-money-bill w-6"></i> Payments</button>`;
-if(currentRole=='staff') html=`<button onclick="showPage('dashboard')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10">Dashboard</button><button onclick="showPage('orders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10">Customer Orders</button><button onclick="showPage('products')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10">View Prices</button>`;
-if(currentRole=='customer') html=`<button onclick="showPage('shop')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10">Shop - Services</button><button onclick="showPage('myorders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10">My Orders & Status</button>`;
+if(currentRole=='admin'){
+html=`<button onclick="showPage('dashboard')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-chart-line w-6"></i> Dashboard</button>
+<button onclick="showPage('orders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-box w-6"></i> All Orders</button>
+<button onclick="showPage('products')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-store w-6"></i> Goods & Prices</button>
+<button onclick="showPage('staff')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-users w-6"></i> Staff Management</button>
+<button onclick="showPage('payments')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-money-bill w-6"></i> Payments / Receipts</button>
+<button onclick="showPage('customers')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-user-group w-6"></i> Customers List</button>`;
+}
+if(currentRole=='staff'){
+html=`<button onclick="showPage('dashboard')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-house w-6"></i> Dashboard</button>
+<button onclick="showPage('orders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-list-check w-6"></i> Customer Orders</button>
+<button onclick="showPage('products')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-eye w-6"></i> Price List</button>`;
+}
+if(currentRole=='customer'){
+html=`<button onclick="showPage('shop')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-bag-shopping w-6"></i> Shop Services</button>
+<button onclick="showPage('myorders')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-receipt w-6"></i> My Orders & Status</button>
+<button onclick="showPage('myreceipts')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-file-invoice w-6"></i> My Receipts</button>
+<button onclick="showPage('support')" class="w-full text-left p-3 rounded-xl text-sm hover:bg-white/10"><i class="fa-solid fa-headset w-6"></i> Support / Contact</button>`;
+}
 m.innerHTML=html;
 }
 
-function showPage(p){document.getElementById('pageTitle').innerText=p;let c=document.getElementById('mainContent');if(p=='dashboard') c.innerHTML=`<div class="grid grid-cols-3 gap-4 mb-6"><div class="bg-white p-5 rounded-2xl border"><h3 id="dOrders" class="text-2xl font-bold">0</h3><p class="text-xs">Orders</p></div><div class="bg-white p-5 rounded-2xl border"><h3 id="dSales" class="text-2xl font-bold">0</h3><p class="text-xs">Sales UGX</p></div><div class="bg-white p-5 rounded-2xl border"><h3 id="dPend" class="text-2xl font-bold">0</h3><p class="text-xs">Pending</p></div></div><div id="dashList" class="bg-white rounded-2xl p-5 border"></div>`;if(p=='orders') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Orders - Update Progress & Notify Customer</h3><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-50 text-[11px]"><tr><th class="p-3 text-left">Customer</th><th>Service</th><th>Amount</th><th>Progress</th><th>Payment</th><th>Action</th></tr></thead><tbody id="ordersTable"></tbody></table></div></div>`;if(p=='products') c.innerHTML=`<div class="grid md:grid-cols-3 gap-6"><div class="md:col-span-2 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Goods & Services & Prices</h3><div id="productsList" class="grid md:grid-cols-2 gap-3"></div></div>${currentRole=='admin'?`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Add Item</h3><input id="pName" placeholder="Name" class="w-full border rounded-xl p-3 mb-2"><input id="pPrice" type="number" placeholder="Price UGX" class="w-full border rounded-xl p-3 mb-2"><select id="pCat" class="w-full border rounded-xl p-3 mb-2"><option>Printing</option><option>Photocopy</option><option>Stationery</option><option>Passport Photo</option><option>Computer Service</option></select><textarea id="pDesc" placeholder="Desc" class="w-full border rounded-xl p-3 mb-3"></textarea><button onclick="addProduct()" class="w-full bg-[#4a2560] text-white p-3 rounded-xl">Add</button></div>`:''}</div>`;if(p=='staff') c.innerHTML=`<div class="grid md:grid-cols-3 gap-6"><div class="md:col-span-2 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Staff - Check Activity & WhatsApp</h3><div id="staffList"></div></div><div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Add Staff</h3><input id="sName" placeholder="Name" class="w-full border rounded-xl p-3 mb-2"><input id="sPhone" placeholder="Phone" class="w-full border rounded-xl p-3 mb-2"><input id="sUser" placeholder="Username" class="w-full border rounded-xl p-3 mb-2"><input id="sPass" placeholder="Password" class="w-full border rounded-xl p-3 mb-3"><button onclick="addStaff()" class="w-full bg-[#4a2560] text-white p-3 rounded-xl">Add Staff</button></div></div>`;if(p=='shop') c.innerHTML=`<div id="customerShop" class="grid md:grid-cols-3 gap-4"></div><div class="mt-6 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-3">My Cart</h3><div id="cartList">No items</div><div class="mt-3"><input id="custName" placeholder="Your Name" class="border rounded-xl p-3 mr-2"><input id="custPhone" placeholder="Phone" class="border rounded-xl p-3 mr-2"><button onclick="placeOrder()" class="bg-[#4a2560] text-white px-6 py-3 rounded-xl">Place Order</button></div></div>`;if(p=='payments') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Payments & Receipts</h3><div id="paymentsTable"></div></div>`;if(p=='myorders') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold">My Orders - Track Status</h3><div id="myOrdersList" class="mt-4"></div></div>`;initPage(p);}
+function showPage(p){
+document.getElementById('pageTitle').innerText=p.toUpperCase();
+if(window.innerWidth<768) document.getElementById('sidebar').classList.add('-translate-x-full');
+let c=document.getElementById('mainContent');
+if(p=='dashboard') c.innerHTML=`<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><div class="bg-white p-5 rounded-2xl border"><h3 id="dOrders" class="text-2xl font-bold">0</h3><p class="text-xs">Orders</p></div><div class="bg-white p-5 rounded-2xl border"><h3 id="dSales" class="text-2xl font-bold">0 UGX</h3><p class="text-xs">Sales</p></div><div class="bg-white p-5 rounded-2xl border"><h3 id="dPend" class="text-2xl font-bold">0</h3><p class="text-xs">Pending</p></div></div><div id="dashList" class="bg-white rounded-2xl p-5 border"></div>`;
+if(p=='orders') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">All Orders - Each Order Separate Page Link</h3><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-50 text-[10px]"><tr><th class="p-3 text-left">Customer</th><th>Service</th><th>Amount</th><th>Progress</th><th>Payment</th><th>Actions</th></tr></thead><tbody id="ordersTable"></tbody></table></div></div>`;
+if(p=='products') c.innerHTML=`<div class="grid md:grid-cols-3 gap-6"><div class="md:col-span-2 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Goods & Services</h3><div id="productsList" class="grid md:grid-cols-2 gap-3"></div></div>${currentRole=='admin'?`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-3">Add/Edit</h3><input id="pName" placeholder="Name" class="w-full border rounded-xl p-3 mb-2"><input id="pPrice" type="number" placeholder="Price UGX" class="w-full border rounded-xl p-3 mb-2"><select id="pCat" class="w-full border rounded-xl p-3 mb-2"><option>Printing</option><option>Photocopy</option><option>Stationery</option><option>Passport Photo</option><option>Computer Service</option></select><textarea id="pDesc" placeholder="Desc" class="w-full border rounded-xl p-3 mb-3"></textarea><button onclick="addProduct()" class="w-full bg-[#4a2560] text-white p-3 rounded-xl">Add Item</button></div>`:''}</div>`;
+if(p=='staff') c.innerHTML=`<div class="grid md:grid-cols-3 gap-6"><div class="md:col-span-2 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Staff Activities</h3><div id="staffList"></div></div><div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-3">Add Staff</h3><input id="sName" placeholder="Name" class="w-full border rounded-xl p-3 mb-2"><input id="sPhone" placeholder="Phone" class="w-full border rounded-xl p-3 mb-2"><input id="sUser" placeholder="Username" class="w-full border rounded-xl p-3 mb-2"><input id="sPass" placeholder="Password" class="w-full border rounded-xl p-3 mb-3"><button onclick="addStaff()" class="w-full bg-[#4a2560] text-white p-3 rounded-xl">Add Staff</button></div></div>`;
+if(p=='shop') c.innerHTML=`<div class="mb-4"><h2 class="font-bold">CTTS Shop - Select Goods & Services</h2><p class="text-xs text-gray-500">All prices shown - choose and order</p></div><div id="customerShop" class="grid md:grid-cols-3 gap-4"></div><div class="mt-6 bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-3">My Cart</h3><div id="cartList" class="text-sm">No items</div><div class="mt-4 flex gap-2"><button onclick="placeOrder()" class="bg-[#4a2560] text-white px-6 py-3 rounded-xl font-bold">Place Order & Pay</button><button onclick="showPage('support')" class="bg-green-500 text-white px-6 py-3 rounded-xl"><i class="fa-brands fa-whatsapp"></i> WhatsApp Order</button></div><div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2"><a href="tel:0764316177" class="bg-gray-100 p-3 rounded-xl text-center text-xs"><i class="fa-solid fa-phone"></i> Call to Order</a><a href="sms:0764316177" class="bg-gray-100 p-3 rounded-xl text-center text-xs"><i class="fa-solid fa-message"></i> SMS Order</a><a href="https://wa.me/256764316177" target="_blank" class="bg-green-100 p-3 rounded-xl text-center text-xs"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><button onclick="showPay()" class="bg-yellow-100 p-3 rounded-xl text-center text-xs"><i class="fa-solid fa-money-bill"></i> MTN/Airtel Pay</button></div></div>`;
+if(p=='myorders') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold">My Orders - Track Progress</h3><p class="text-xs text-gray-500">Your orders only - admin will update progress</p><div id="myOrdersList" class="mt-4"></div></div>`;
+if(p=='myreceipts') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold">My Receipts - After Payment</h3><div id="myReceipts" class="mt-4"></div></div>`;
+if(p=='payments') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Payments Verification</h3><div id="paymentsTable"></div></div>`;
+if(p=='customers') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border"><h3 class="font-bold mb-4">Registered Customers</h3><div id="customersList"></div></div>`;
+if(p=='support') c.innerHTML=`<div class="bg-white rounded-2xl p-5 border max-w-xl"><h3 class="font-bold mb-4">Contact CTTS - Adei Simon Peter</h3><div class="space-y-3">
+<a href="tel:0764316177" class="flex justify-between p-4 bg-gray-50 rounded-xl"><span><i class="fa-solid fa-phone w-6"></i> Call MTN</span><span class="font-bold">0764316177</span></a>
+<a href="tel:0745824005" class="flex justify-between p-4 bg-gray-50 rounded-xl"><span><i class="fa-solid fa-phone w-6"></i> Call Airtel</span><span class="font-bold">0745824005</span></a>
+<a href="https://wa.me/256764316177" target="_blank" class="flex justify-between p-4 bg-green-50 rounded-xl border border-green-200"><span><i class="fa-brands fa-whatsapp w-6 text-green-600"></i> WhatsApp</span><span class="font-bold text-green-600">Chat Now</span></a>
+<a href="sms:0764316177" class="flex justify-between p-4 bg-blue-50 rounded-xl"><span><i class="fa-solid fa-message w-6"></i> SMS</span><span class="font-bold">Send SMS</span></a>
+<a href="mailto:ctts.rogom@gmail.com" class="flex justify-between p-4 bg-yellow-50 rounded-xl"><span><i class="fa-solid fa-envelope w-6"></i> Email</span><span class="font-bold">ctts.rogom@gmail.com</span></a>
+<button onclick="showPay()" class="w-full flex justify-between p-4 bg-[#1a1a2e] text-white rounded-xl"><span><i class="fa-solid fa-money-bill w-6"></i> MTN / Airtel Payment</span><span>Pay Now</span></button>
+</div></div>`;
+initPage(p);
+}
 
 function initPage(p){
-if(p=='dashboard'||p=='orders'||p=='payments'||p=='myorders'){
-db.collection('ctts_orders').onSnapshot(s=>{let total=0,pend=0,html='';s.forEach(doc=>{let o=doc.data(),id=doc.id;total+=Number(o.total||0);if(o.status!='completed')pend++;html+=`<tr class="border-b"><td class="p-3"><b>${o.name}</b><br><span class="text-xs text-gray-500">${o.phone}</span></td><td class="p-3">${o.service}</td><td class="p-3 font-bold">${Number(o.total||0).toLocaleString()}</td><td class="p-3"><span class="px-2 py-1 rounded-full text-[11px] bg-yellow-100">${o.status||'pending'}</span><br><span class="text-[10px]">${o.progress||''}</span></td><td class="p-3"><span class="px-2 py-1 rounded-full text-[11px] ${o.paid?'bg-green-100':'bg-red-100'}">${o.paid?'PAID':'UNPAID'}</span></td><td class="p-3"><select onchange="updateStatus('${id}',this.value)" class="border rounded p-1 text-[11px]"><option>Progress</option><option value="pending">Pending</option><option value="progress">In Progress</option><option value="ready">Ready</option><option value="completed">Completed</option></select><button onclick="notifyCustomer('${o.phone}','${o.name}')" class="bg-green-500 text-white px-2 py-1 rounded text-[11px] m-1">WhatsApp</button><button onclick="markPaid('${id}')" class="bg-purple-600 text-white px-2 py-1 rounded text-[11px]">Paid</button><button onclick="printReceipt('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-[11px]">Receipt</button>${currentRole=='admin'?`<button onclick="delOrder('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-[11px]">Del</button>`:''}</td></tr>`;});if(document.getElementById('dOrders')){document.getElementById('dOrders').innerText=s.size;document.getElementById('dSales').innerText=total.toLocaleString();document.getElementById('dPend').innerText=pend;document.getElementById('dashList').innerHTML=html||'No orders';}if(document.getElementById('ordersTable'))document.getElementById('ordersTable').innerHTML=html||'No orders';if(document.getElementById('paymentsTable'))document.getElementById('paymentsTable').innerHTML=`<table class="w-full text-sm"><thead class="bg-gray-50"><tr><th class="p-3">Customer</th><th>Amount</th><th>Status</th></tr></thead><tbody>${html}</tbody></table>`;if(document.getElementById('myOrdersList'))document.getElementById('myOrdersList').innerHTML=html;});}
+if(p=='dashboard'||p=='orders'||p=='payments'){
+db.collection('ctts_orders').onSnapshot(s=>{let total=0,pend=0,html='';s.forEach(doc=>{let o=doc.data(),id=doc.id;total+=Number(o.total||0);if(o.status!='completed')pend++;let row=`<tr class="border-b"><td class="p-3"><b>${o.name}</b><br><span class="text-xs text-gray-500">${o.phone}</span></td><td class="p-3">${o.service}</td><td class="p-3 font-bold">${Number(o.total||0).toLocaleString()}</td><td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] bg-yellow-100">${o.status||'pending'}</span><br><span class="text-[10px] text-gray-500">${o.progress||''}</span></td><td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] ${o.paid?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}">${o.paid?'PAID':'UNPAID'}</span></td><td class="p-3 space-y-1">${currentRole!='customer'?`<select onchange="updateStatus('${id}',this.value)" class="border rounded p-1 text-[10px] w-full"><option>Status</option><option value="pending">Pending</option><option value="progress">In Progress</option><option value="ready">Ready</option><option value="completed">Completed</option></select><button onclick="notifyCustomer('${o.phone}','${o.name}')" class="w-full bg-green-500 text-white px-2 py-1 rounded text-[10px]"><i class="fa-brands fa-whatsapp"></i> Notify</button>`:''}<div class="grid grid-cols-2 gap-1"><a href="tel:${o.phone}" class="bg-gray-100 p-1 rounded text-[10px] text-center"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/${o.phone}" target="_blank" class="bg-green-100 p-1 rounded text-[10px] text-center">WhatsApp</a><a href="sms:${o.phone}" class="bg-blue-100 p-1 rounded text-[10px] text-center">SMS</a><button onclick="printReceipt('${id}')" class="bg-blue-500 text-white p-1 rounded text-[10px]">Receipt</button></div></td></tr>`;html+=row;});if(document.getElementById('dOrders')){document.getElementById('dOrders').innerText=s.size;document.getElementById('dSales').innerText=total.toLocaleString()+' UGX';document.getElementById('dPend').innerText=pend;document.getElementById('dashList').innerHTML=html||'No orders';}if(document.getElementById('ordersTable'))document.getElementById('ordersTable').innerHTML=html||'<tr><td colspan=6 class="p-6 text-center">No orders</td></tr>';if(document.getElementById('paymentsTable'))document.getElementById('paymentsTable').innerHTML=`<table class="w-full text-sm"><tbody>${html}</tbody></table>`;});
+}
 if(p=='products'||p=='shop'){
-db.collection('ctts_products').onSnapshot(s=>{let h='';s.forEach(doc=>{let pr=doc.data(),id=doc.id;h+=`<div class="bg-white border rounded-2xl p-4"><div class="flex justify-between"><span class="text-[10px] bg-purple-100 text-purple-700 px-2 py-1 rounded-full">${pr.cat}</span><span class="font-bold">${Number(pr.price).toLocaleString()} UGX</span></div><h4 class="font-bold mt-2">${pr.name}</h4><p class="text-xs text-gray-500">${pr.desc||''}</p><div class="mt-3">${currentRole=='admin'?`<button onclick="delProduct('${id}')" class="bg-red-50 text-red-600 px-3 py-1 rounded text-xs">Delete</button> <button onclick="editProduct('${id}',${pr.price})" class="bg-blue-50 text-blue-600 px-3 py-1 rounded text-xs">Edit Price</button>`:`<button onclick="addToCart('${pr.name}',${pr.price})" class="w-full bg-[#111122] text-white py-2 rounded-xl text-xs">Add to Order</button>`}</div></div>`;});if(document.getElementById('productsList'))document.getElementById('productsList').innerHTML=h||'No items - Admin add';if(document.getElementById('customerShop'))document.getElementById('customerShop').innerHTML=h||'Loading...';if(s.empty&&currentRole=='admin')seedProducts();});}
-if(p=='staff'){db.collection('ctts_staff').onSnapshot(s=>{let h='';s.forEach(doc=>{let st=doc.data();h+=`<div class="flex justify-between p-4 border rounded-xl mb-2"><div><b>${st.name}</b><br><span class="text-xs">${st.phone} • ${st.username}</span></div><div><a href="https://wa.me/${st.phone}" target="_blank" class="bg-green-500 text-white px-3 py-1 rounded text-xs">WhatsApp</a> <button onclick="delStaff('${doc.id}')" class="bg-red-50 text-red-600 px-3 py-1 rounded text-xs">Remove</button></div></div>`;});document.getElementById('staffList').innerHTML=h||'No staff';});}
+db.collection('ctts_products').onSnapshot(s=>{let h='';s.forEach(doc=>{let pr=doc.data(),id=doc.id;h+=`<div class="bg-white border rounded-2xl p-4"><div class="flex justify-between"><span class="text-[9px] bg-purple-100 px-2 py-1 rounded-full">${pr.cat}</span><span class="font-bold text-sm">${Number(pr.price).toLocaleString()} UGX</span></div><h4 class="font-bold mt-2 text-sm">${pr.name}</h4><p class="text-[11px] text-gray-500">${pr.desc||''}</p><div class="mt-3">${currentRole=='admin'?`<button onclick="delProduct('${id}')" class="text-[11px] bg-red-50 text-red-600 px-2 py-1 rounded">Del</button> <button onclick="editProduct('${id}',${pr.price})" class="text-[11px] bg-blue-50 text-blue-600 px-2 py-1 rounded">Edit Price</button>`:`<button onclick="addToCart('${pr.name}',${pr.price})" class="w-full bg-[#111122] text-white py-2 rounded-xl text-xs">Add to Order</button>`}</div></div>`;});if(document.getElementById('productsList'))document.getElementById('productsList').innerHTML=h||'No items';if(document.getElementById('customerShop'))document.getElementById('customerShop').innerHTML=h||'Loading';if(s.empty&&currentRole=='admin')seedProducts();});
+}
+if(p=='myorders'||p=='myreceipts'){
+let phone=localStorage.getItem('custPhone')||'';let name=localStorage.getItem('custName')||currentUser;
+db.collection('ctts_orders').where('phone','==',phone).onSnapshot(s=>{let html='';s.forEach(doc=>{let o=doc.data(),id=doc.id;html+=`<div class="border rounded-xl p-4 mb-3"><div class="flex justify-between"><b>${o.service}</b><span class="font-bold">${Number(o.total).toLocaleString()} UGX</span></div><p class="text-xs mt-2">Status: <span class="px-2 py-1 bg-yellow-100 rounded-full text-[10px]">${o.status}</span> - ${o.progress||''}</p><p class="text-xs">Payment: <span class="${o.paid?'text-green-600':'text-red-600'} font-bold">${o.paid?'PAID - Receipt Available':'UNPAID - Pay via MTN/Airtel'}</span></p><div class="mt-3 grid grid-cols-3 gap-2">${o.paid?`<button onclick="printReceipt('${id}')" class="bg-blue-500 text-white p-2 rounded-lg text-xs"><i class="fa-solid fa-file"></i> My Receipt</button>`:''}<a href="tel:0764316177" class="bg-gray-100 p-2 rounded-lg text-xs text-center"><i class="fa-solid fa-phone"></i> Call</a><a href="https://wa.me/256764316177?text=My Order ${o.service}" target="_blank" class="bg-green-500 text-white p-2 rounded-lg text-xs text-center">WhatsApp</a></div></div>`;});if(document.getElementById('myOrdersList'))document.getElementById('myOrdersList').innerHTML=html||'No orders yet';if(document.getElementById('myReceipts'))document.getElementById('myReceipts').innerHTML=html||'No receipts - pay first';});
+}
+if(p=='customers'){db.collection('ctts_customers').onSnapshot(s=>{let h='';s.forEach(doc=>{let c=doc.data();h+=`<div class="flex justify-between border p-3 rounded-xl mb-2"><div><b>${c.name}</b><br><span class="text-xs">${c.phone} • ${c.username}</span></div><div class="flex gap-1"><a href="tel:${c.phone}" class="bg-gray-100 p-2 rounded text-xs"><i class="fa-solid fa-phone"></i></a><a href="https://wa.me/${c.phone}" target="_blank" class="bg-green-500 text-white p-2 rounded text-xs"><i class="fa-brands fa-whatsapp"></i></a></div></div>`;});document.getElementById('customersList').innerHTML=h||'No customers';});}
+if(p=='staff'){db.collection('ctts_staff').onSnapshot(s=>{let h='';s.forEach(doc=>{let st=doc.data();h+=`<div class="flex justify-between p-3 border rounded-xl mb-2"><div><b>${st.name}</b><br><span class="text-xs">${st.phone}</span></div><div><a href="https://wa.me/${st.phone}" target="_blank" class="bg-green-500 text-white px-3 py-1 rounded text-xs">WhatsApp</a> <button onclick="delStaff('${doc.id}')" class="bg-red-50 text-red-600 px-3 py-1 rounded text-xs">Remove</button></div></div>`;});document.getElementById('staffList').innerHTML=h||'No staff';});}
 }
 
 function addProduct(){let n=document.getElementById('pName').value,pr=document.getElementById('pPrice').value,c=document.getElementById('pCat').value,d=document.getElementById('pDesc').value;if(!n||!pr)return alert('Enter name & price');db.collection('ctts_products').add({name:n,price:Number(pr),cat:c,desc:d,createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('Added');}
-function seedProducts(){let items=[{name:'A4 Photocopy',price:100,cat:'Photocopy',desc:'Per page B/W'},{name:'A4 Printing',price:300,cat:'Printing',desc:'Color printing'},{name:'Passport Photo',price:5000,cat:'Passport Photo',desc:'4 photos'},{name:'A4 Ruled Book',price:2500,cat:'Stationery',desc:'200 pages'},{name:'Pen BIC',price:500,cat:'Stationery',desc:'Blue'}];items.forEach(i=>db.collection('ctts_products').add({...i,createdAt:firebase.firestore.FieldValue.serverTimestamp()}));}
+function seedProducts(){[{name:'A4 Photocopy',price:100,cat:'Photocopy',desc:'Per page'},{name:'A4 Printing',price:300,cat:'Printing',desc:'Color'},{name:'Passport Photo',price:5000,cat:'Passport Photo',desc:'4 photos'},{name:'A4 Book',price:2500,cat:'Stationery',desc:'200 pages'}].forEach(i=>db.collection('ctts_products').add({...i,createdAt:firebase.firestore.FieldValue.serverTimestamp()}));}
 function delProduct(id){if(confirm('Delete?'))db.collection('ctts_products').doc(id).delete();}
 function editProduct(id,oldP){let np=prompt('New Price',oldP);if(np)db.collection('ctts_products').doc(id).update({price:Number(np)});}
 function addStaff(){let n=document.getElementById('sName').value,p=document.getElementById('sPhone').value,u=document.getElementById('sUser').value,ps=document.getElementById('sPass').value;if(!n||!p||!u)return alert('Fill');db.collection('ctts_staff').add({name:n,phone:p,username:u,password:ps,createdAt:firebase.firestore.FieldValue.serverTimestamp()});alert('Staff Added');}
 function delStaff(id){if(confirm('Remove?'))db.collection('ctts_staff').doc(id).delete();}
-function updateStatus(id,st){let prog=prompt('Progress note for customer:',st);db.collection('ctts_orders').doc(id).update({status:st,progress:prog||st,updatedBy:currentUser});}
-function notifyCustomer(phone,name){if(!phone)return alert('No phone');let msg=encodeURIComponent(`Hello ${name}, CTTS Update: Your order is being worked on. - Adei`);window.open(`https://wa.me/${phone.replace(/[^0-9]/g,'')}?text=${msg}`,'_blank');}
+function updateStatus(id,st){let prog=prompt('Progress note for customer (will notify):',st);db.collection('ctts_orders').doc(id).update({status:st,progress:prog||st,updatedBy:currentUser});}
+function notifyCustomer(phone,name){let msg=encodeURIComponent(`Hello ${name}, CTTS Update: Your order status updated. Check app for details. - Adei`);window.open(`https://wa.me/${phone.replace(/[^0-9]/g,'')}?text=${msg}`,'_blank');}
 function markPaid(id){db.collection('ctts_orders').doc(id).update({paid:true});}
-function delOrder(id){if(confirm('Delete order?'))db.collection('ctts_orders').doc(id).delete();}
-function addToCart(name,price){cart.push({name,price});let h='',tot=0;cart.forEach((c,i)=>{tot+=c.price;h+=`<div class="flex justify-between text-sm py-1"><span>${c.name}</span><span>${c.price.toLocaleString()} <button onclick="cart.splice(${i},1);showPage('shop')" class="text-red-500">x</button></span></div>`;});h+=`<div class="font-bold border-t pt-2">Total: ${tot.toLocaleString()} UGX</div>`;document.getElementById('cartList').innerHTML=h;}
-function placeOrder(){if(!cart.length)return alert('Add items');let n=document.getElementById('custName').value,ph=document.getElementById('custPhone').value;if(!n||!ph)return alert('Enter name & phone');let tot=cart.reduce((s,c)=>s+c.price,0),serv=cart.map(c=>c.name).join(', ');db.collection('ctts_orders').add({name:n,phone:ph,service:serv,total:tot,status:'pending',progress:'Received',paid:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Order placed! Receipt will generate. Check My Orders for status.');cart=[];});}
-function printReceipt(id){db.collection('ctts_orders').doc(id).get().then(d=>{let o=d.data(),w=window.open('','','width=800,height=600');w.document.write(`<html><body style="font-family:Arial;padding:20px"><h2>CTTS RECEIPT</h2><p>Adei Simon Peter - MTN:0764316177</p><hr><p>Customer: ${o.name}<br>Phone: ${o.phone}<br>Status: ${o.status} - ${o.progress||''}<br>Payment: ${o.paid?'PAID':'UNPAID'}</p><table border=1 style="width:100%;border-collapse:collapse"><tr><th>Service</th><th>Amount</th></tr><tr><td>${o.service}</td><td>${o.total} UGX</td></tr></table><h3>Total: ${o.total} UGX</h3><script>window.print()<\/script></body></html>`);w.document.close();});}
+function delOrder(id){if(confirm('Delete?'))db.collection('ctts_orders').doc(id).delete();}
+function addToCart(name,price){cart.push({name,price});let h='',tot=0;cart.forEach(c=>{tot+=c.price;h+=`<div class="flex justify-between py-1"><span>${c.name}</span><span>${c.price.toLocaleString()}</span></div>`;});h+=`<div class="font-bold border-t pt-2">Total: ${tot.toLocaleString()} UGX</div>`;document.getElementById('cartList').innerHTML=h;}
+function placeOrder(){if(!cart.length)return alert('Add items');let phone=localStorage.getItem('custPhone')||prompt('Phone'),name=localStorage.getItem('custName')||currentUser;if(!phone)return alert('Need phone');let tot=cart.reduce((s,c)=>s+c.price,0),serv=cart.map(c=>c.name).join(', ');db.collection('ctts_orders').add({name,phone,service:serv,total:tot,status:'pending',progress:'Received - Awaiting payment',paid:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Order placed! Pay via MTN 0764316177 or Airtel 0745824005. You can track in My Orders.');cart=[];document.getElementById('cartList').innerHTML='No items';showPage('myorders');});}
+function showPay(){alert('PAYMENT:\n\nMTN Mobile Money: 0764316177 - Adei Simon Peter\nAirtel Money: 0745824005 - Adei Simon Peter\n\nAfter payment, send screenshot via WhatsApp: https://wa.me/256764316177');}
+function printReceipt(id){db.collection('ctts_orders').doc(id).get().then(d=>{let o=d.data(),w=window.open('','','width=800,height=600');w.document.write(`<html><body style="font-family:Arial;padding:20px"><h2>CTTS RECEIPT</h2><p>Adei Simon Peter - MTN:0764316177 | Airtel:0745824005</p><hr><p>Customer: ${o.name}<br>Phone: ${o.phone}<br>Status: ${o.status}<br>Progress: ${o.progress}<br>Payment: ${o.paid?'PAID':'UNPAID'}</p><table border=1 style="width:100%;border-collapse:collapse"><tr><th>Service</th><th>Amount</th></tr><tr><td>${o.service}</td><td>${o.total} UGX</td></tr></table><h3>Total: ${o.total} UGX</h3><p>Thank you!</p><script>window.print()<\/script></body></html>`);w.document.close();});}
 </script></body></html>
