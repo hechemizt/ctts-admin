@@ -1,24 +1,17 @@
 {
-  "name": "CTTS - CHRIST TALENT TECH SERVICES",
-  "short_name": "CTTS",
-  "description": "Secure Private Accounts - Bookshop, Tech Center, Stationery - Rogom",
-  "start_url": "/ctts-admin/",
+  "name": "CTTS - Christ Talent Tech Services - Rogom Centre",
+  "short_name": "CTTS Rogom",
+  "description": "CTTS - Printing, Bookshop, Stationery, Passport, Tech - Rogom Trading Centre - 0764316177 - Customer sees website first, login with username & password, Staff different page, Admin hidden",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#111122",
-  "theme_color": "#ffcc00",
+  "theme_color": "#111122",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "./logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src": "logo.png","sizes": "72x72","type": "image/png","purpose": "any maskable"},
+    {"src": "logo.png","sizes": "96x96","type": "image/png","purpose": "any maskable"},
+    {"src": "logo.png","sizes": "128x128","type": "image/png","purpose": "any maskable"},
+    {"src": "logo.png","sizes": "192x192","type": "image/png","purpose": "any maskable"},
+    {"src": "logo.png","sizes": "512x512","type": "image/png","purpose": "any maskable"}
   ]
 }
