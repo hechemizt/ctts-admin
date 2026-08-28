@@ -284,7 +284,19 @@ Tap to Upload file for printing
 </div>
 
 <script>
-const firebaseConfig={apiKey:"AIzaSyD4qXv3z3z3z3z3z3z3z3z3z3z3z3z3z3z3",authDomain:"ctts-rogom-centre.firebaseapp.com",projectId:"ctts-rogom-centre",storageBucket:"ctts-rogom-centre.appspot.com",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
+import { initializeApp } from "firebase/app";
+const firebaseConfig = {
+  apiKey: "AIzaSyDTDSNf_na7I1NumCurymU_YTvEnGC6FtU",
+  authDomain: "ctts-rogom-cc1e0.firebaseapp.com",
+  pro0",
+  storageBucket: "ctts-rogom-cc1e0.firebasestorage.app",
+  messagingSenderId: "279143059942",
+  appId: "1:279143059942:web:cc80e0c89b01dee9fd4627"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+//const firebaseConfig={apiKey:"AIzaSyD4qXv3z3z3z3z3z3z3z3z3z3z3z3z3z3z3",authDomain:"ctts-rogom-centre.firebaseapp.com",projectId:"ctts-rogom-centre",storageBucket:"ctts-rogom-centre.appspot.com",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
 try{const s=localStorage.getItem('firebaseConfig_real');if(s) Object.assign(firebaseConfig,JSON.parse(s));}catch(e){}
 firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
 let currentUser=JSON.parse(localStorage.getItem('ctts_user')||'null');
