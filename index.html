@@ -3,62 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTTS Rogom Centre - V18 Premium</title>
+<title>CTTS Rogom Centre - Lamwo | Printing, Stationery, School Supplies</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#f5f7fb}
-.header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.logo{font-weight:900;font-size:20px;cursor:pointer}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.btn{padding:8px 14px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
-.btn-primary{background:#2563eb;color:#fff}
-.btn-success{background:#16a34a;color:#fff}
-.btn-dark{background:#1f2937;color:#fff}
-.btn-outline{background:#fff;border:1px solid #ddd}
-.badge{background:#ef4444;color:#fff;padding:2px 8px;border-radius:12px;font-size:12px}
-.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.product{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff}
-.product img{width:100%;height:120px;object-fit:cover}
-.product-body{padding:10px}
-.real{border:2px solid #16a34a!important;position:relative}
-.real::after{content:'REAL';position:absolute;top:6px;right:6px;background:#16a34a;color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:900}
-.input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:6px 0}
-.hidden{display:none}
-.admin-panel{border-top:4px solid #f59e0b}
-.role-customer{border-left:5px solid #2563eb}
-.role-staff{border-left:5px solid #8b5cf6}
-.role-admin{border-left:5px solid #f59e0b}
-.upload-area{border:2px dashed #2563eb;border-radius:12px;padding:20px;text-align:center;background:#eff6ff;margin:10px 0}
+:root{--p:#2563eb;--d:#0f172a;--s:#16a34a;--bg:#f8fafc}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+body{background:var(--bg);color:#1e293b}
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+.logo-area{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-img{width:48px;height:48px;border-radius:12px;background:var(--d);display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;overflow:hidden}
+.logo-img img{width:100%;height:100%;object-fit:cover}
+.btn{padding:10px 18px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+.btn-p{background:var(--p);color:#fff}
+.btn-s{background:var(--s);color:#fff}
+.btn-d{background:var(--d);color:#fff}
+.btn-o{background:#fff;border:1px solid #e2e8f0}
+.btn-w{background:#25D366;color:#fff}
+.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin:12px;border:1px solid #f1f5f9}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.product{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #e2e8f0}
+.product img{width:100%;height:140px;object-fit:cover}
+.product-body{padding:12px}
+.input{width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:12px;margin:6px 0}
+.hidden{display:none!important}
+.hero{background:linear-gradient(135deg,#0f172a 0%,#2563eb 100%);color:#fff;padding:40px 20px;text-align:center;border-radius:0 0 32px 32px}
+.pill{display:inline-block;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.15);font-size:12px;margin:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px}
+.stat{background:#fff;border-radius:16px;padding:16px;text-align:center;border:1px solid #f1f5f9}
+.stat b{font-size:22px;display:block}
+.upload-area{border:2px dashed var(--p);border-radius:16px;padding:24px;text-align:center;background:#eff6ff;cursor:pointer;margin:10px 0}
+.nav-tabs{display:flex;gap:8px;overflow:auto;padding:10px 12px;position:sticky;top:64px;background:var(--bg);z-index:90}
+.badge-real{position:absolute;top:8px;right:8px;background:var(--s);color:#fff;font-size:9px;padding:3px 7px;border-radius:6px;font-weight:900}
 </style>
 </head>
 <body>
 <div class="header">
-<div class="logo" onclick="tapLogo()">CTTS V18 PREMIUM</div>
-<div class="nav">
-<button class="btn btn-outline" onclick="showView('shop')">Shop</button>
-<button class="btn btn-outline" onclick="showView('myorders')">My Orders</button>
-<button class="btn btn-outline" onclick="showView('cart')">Cart (<span id="cartCount">0</span>)</button>
-<button class="btn btn-primary" id="authBtn" onclick="showView('auth')">Login</button>
-<button class="btn btn-dark hidden" id="staffBtn" onclick="showView('staff')">Staff Panel</button>
-<button class="btn btn-dark hidden" id="adminBtn" onclick="showView('admin')">Admin</button>
+<div class="logo-area" onclick="tapLogo()" title="Tap 5x for Admin">
+<div class="logo-img" id="logoImg">CTTS</div>
+<div><b>CTTS Rogom Centre</b><br><small style="color:#64748b">Lamwo • Printing & Stationery</small></div>
+</div>
+<div style="display:flex;gap:6px;align-items:center">
+<button class="btn btn-o" onclick="showView('shop')">Shop</button>
+<button class="btn btn-o" onclick="showView('cart')">Cart <span id="cartCount">0</span></button>
+<button class="btn btn-p" id="authBtn" onclick="showView('auth')">Login</button>
 </div>
 </div>
 
-<div id="shopView" class="card">
-<h2>CTTS Rogom Centre - Lamwo</h2>
-<p>Printing | Photocopy | Stationery - MoMo 0764316177</p>
-<input id="search" class="input" placeholder="Search..." oninput="renderProducts()">
-<div style="display:flex;gap:8px;margin:10px 0">
-<button class="btn btn-outline" onclick="filterCat('all')">All</button>
-<button class="btn btn-outline" onclick="filterCat('printing')">Printing</button>
-<button class="btn btn-outline" onclick="filterCat('stationery')">Stationery</button>
-<button class="btn btn-outline" onclick="filterCat('school')">School</button>
+<div id="landingView">
+<div class="hero">
+<h1>CTTS Rogom Centre</h1>
+<p>Your Trusted Partner in Lamwo for Printing, Photocopy, Stationery & School Supplies</p>
+<div>
+<span class="pill">Lamwo Town, Opposite District HQ</span>
+<span class="pill">0764316177 / 0782345678</span>
+<span class="pill">Open Mon-Sat 8am-7pm</span>
 </div>
-<div id="productsGrid" class="grid"></div>
+<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+<button class="btn btn-s" onclick="showView('auth')">Login to Shop Now</button>
+<button class="btn btn-w" onclick="openWhatsApp('256764316177','Hello CTTS')">WhatsApp Us</button>
+<a href="tel:+256764316177" class="btn btn-d" style="text-decoration:none">Call Now</a>
+</div>
+</div>
+<div class="card">
+<h3>Location & Contact - CTTS Rogom Centre</h3>
+<p>CTTS Rogom Centre, Lamwo District, Northern Uganda<br>Opposite Lamwo District HQ<br><br>
+<strong>MTN MoMo:</strong> 0764316177<br>
+<strong>Call:</strong> 0764316177<br>
+<strong>Email:</strong> cttsrogom@gmail.com<br>
+<button class="btn btn-w" style="width:100%" onclick="openWhatsApp('256764316177','Hello CTTS')">Chat with Admin on WhatsApp</button>
+</p>
+</div>
+</div>
+
+<div id="shopView" class="hidden">
+<div class="nav-tabs">
+<button class="btn btn-o" onclick="filterCat('all')">All</button>
+<button class="btn btn-o" onclick="filterCat('printing')">Printing</button>
+<button class="btn btn-o" onclick="filterCat('stationery')">Stationery</button>
+<button class="btn btn-o" onclick="filterCat('school')">School</button>
+<input id="search" class="input" placeholder="Search..." oninput="renderProducts()" style="margin:0;max-width:200px">
+</div>
+<div id="productsGrid" class="grid" style="margin:12px"></div>
 </div>
 
 <div id="cartView" class="card hidden">
@@ -66,118 +93,253 @@ body{background:#f5f7fb}
 <div id="cartItems"></div>
 <h3 id="cartTotal">Total: UGX 0</h3>
 <div class="card">
-<h4>Customer Upload - Documents for Printing</h4>
+<h4>Upload Document for Printing</h4>
 <div class="upload-area" onclick="document.getElementById('printFile').click()">
-Tap to Upload Document for Printing
+Tap to Upload File for Printing
 <input type="file" id="printFile" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png" onchange="handlePrintUpload(this)">
 <p id="printFileName" style="color:#2563eb"></p>
 </div>
-<input id="txId" class="input" placeholder="MoMo Transaction ID">
-<textarea id="printNote" class="input" placeholder="Note: e.g., Print 2 copies color..."></textarea>
-<button class="btn btn-success" onclick="placeOrder()" style="width:100%">Place Order + Submit Print Job</button>
+<textarea id="printNote" class="input" placeholder="Print instructions: e.g., 2 copies color..."></textarea>
+<input id="txId" class="input" placeholder="MoMo Transaction ID after paying 0764316177">
+<button class="btn btn-s" onclick="placeOrder()" style="width:100%">Place Order + Submit Print Job</button>
 </div>
+</div><div id="customerView" class="hidden">
+<div class="nav-tabs">
+<button class="btn btn-p" onclick="custTab('dash')">Dashboard</button>
+<button class="btn btn-o" onclick="custTab('orders')">My Orders</button>
+<button class="btn btn-o" onclick="custTab('upload')">Upload Files</button>
+<button class="btn btn-o" onclick="custTab('rating')">Rating</button>
+<button class="btn btn-o" onclick="custTab('profile')">Profile</button>
 </div>
-
-<div id="myordersView" class="card hidden">
-<h2>My Orders + Receipts</h2>
+<div id="custDash" class="card">
+<h2>Welcome <span id="custName">Customer</span></h2>
+<div class="stats">
+<div class="stat"><b id="custOrderCount">0</b><small>Orders</small></div>
+<div class="stat"><b id="custTotalSpent">UGX 0</b><small>Total Spent</small></div>
+<div class="stat"><b>Active</b><small>Status</small></div>
+</div>
+<button class="btn btn-p" onclick="showView('shop')" style="width:100%">Continue Shopping</button>
+<button class="btn btn-w" onclick="openWhatsApp('256764316177','Help')" style="width:100%;margin-top:8px">Contact Admin WhatsApp</button>
+</div>
+<div id="custOrders" class="card hidden">
+<h3>My Orders - Status & Receipt Download</h3>
 <div id="myOrdersList"></div>
+</div>
+<div id="custUpload" class="card hidden">
+<h3>Upload / Download Files</h3>
+<div class="upload-area" onclick="document.getElementById('custFile').click()">
+Tap to Upload file for printing
+<input type="file" id="custFile" class="hidden" onchange="handleCustUpload(this)">
+<p id="custFileName"></p>
+</div>
+<div id="custFilesList"></div>
+</div>
+<div id="custRating" class="card hidden">
+<h3>Rate Us</h3>
+<select id="ratingStars" class="input"><option value="5">5 Stars Excellent</option><option value="4">4 Good</option><option value="3">3 Average</option></select>
+<textarea id="ratingComment" class="input" placeholder="Your comment..."></textarea>
+<button class="btn btn-p" onclick="submitRating()" style="width:100%">Submit Rating</button>
+<div id="ratingsList"></div>
+</div>
+<div id="custProfile" class="card hidden">
+<h3>Reset Password</h3>
+<input id="oldPass" type="password" class="input" placeholder="Old Password">
+<input id="newPass1" type="password" class="input" placeholder="New Password">
+<input id="newPass2" type="password" class="input" placeholder="Confirm">
+<button class="btn btn-p" onclick="resetPassword()" style="width:100%">Reset</button>
+<button class="btn btn-d" onclick="logout()" style="width:100%;margin-top:8px">Logout</button>
+</div>
 </div>
 
 <div id="authView" class="card hidden">
-<div style="max-width:400px;margin:auto">
+<div style="max-width:380px;margin:auto">
 <h2 id="authTitle">Login to Shop</h2>
 <input id="authUser" class="input" placeholder="Username">
 <input id="authPass" type="password" class="input" placeholder="Password">
-<button class="btn btn-primary" onclick="handleAuth()" style="width:100%" id="authActionBtn">Login</button>
-<p style="text-align:center"><a href="#" onclick="toggleAuthMode()">Need account? Register</a></p>
-<p id="authMsg" style="color:#16a34a;text-align:center"></p>
+<button class="btn btn-p" onclick="handleAuth()" style="width:100%" id="authActionBtn">Login</button>
+<p style="text-align:center;margin-top:10px"><a href="#" onclick="toggleAuthMode()">Need account? Register</a></p>
+<p id="authMsg" style="text-align:center;color:green"></p>
 </div>
 </div>
 
 <div id="forcePassView" class="card hidden">
-<div style="max-width:400px;margin:auto;border:3px solid #ef4444;padding:20px;border-radius:12px">
+<div style="max-width:400px;margin:auto;border:3px solid red;padding:20px;border-radius:16px">
 <h2>Change Default Password - Required</h2>
-<input id="newPass1" type="password" class="input" placeholder="New Password">
-<input id="newPass2" type="password" class="input" placeholder="Confirm New Password">
-<button class="btn btn-success" style="width:100%" onclick="changeDefaultPassword()">Change & Continue</button>
+<p>Your admin sent random password via WhatsApp. You MUST change it now.</p>
+<input id="forceNew1" type="password" class="input" placeholder="New Password min 6 chars">
+<input id="forceNew2" type="password" class="input" placeholder="Confirm New Password">
+<button class="btn btn-s" style="width:100%" onclick="changeDefaultPassword()">Change & Continue</button>
 </div>
 </div>
 
-<div id="staffView" class="card hidden role-staff">
-<h2>Staff Panel</h2>
-<button class="btn btn-primary" onclick="loadAllOrdersForStaff()">Load Orders</button>
-<button class="btn btn-outline" onclick="alert('Download CSV Ready')">Download Orders CSV</button>
-<button class="btn btn-dark" onclick="logout()">Logout</button>
+<div id="staffView" class="hidden">
+<div class="nav-tabs">
+<button class="btn btn-p" onclick="staffTab('dash')">Dashboard</button>
+<button class="btn btn-o" onclick="staffTab('orders')">Orders</button>
+<button class="btn btn-o" onclick="staffTab('stock')">Stock</button>
+<button class="btn btn-o" onclick="staffTab('print')">Print Jobs</button>
+<button class="btn btn-o" onclick="staffTab('customers')">Customers</button>
+<button class="btn btn-o" onclick="staffTab('profile')">Profile</button>
+</div>
+<div id="staffDash" class="card">
+<h2>Staff Dashboard - <span id="staffName">Staff</span></h2>
+<div class="stats">
+<div class="stat"><b id="staffPending">0</b><small>Pending</small></div>
+<div class="stat"><b id="staffTodaySales">UGX 0</b><small>Today Sales</small></div>
+<div class="stat"><b id="staffPrintJobsCount">0</b><small>Print Jobs</small></div>
+</div>
+<button class="btn btn-p" onclick="loadStaffOrders()">Load Orders</button>
+<button class="btn btn-w" onclick="openWhatsApp('256764316177','Staff needs help')">WhatsApp Admin</button>
+</div>
+<div id="staffOrdersTab" class="card hidden">
+<h3>All Orders - Confirm Payment & Status</h3>
 <div id="staffOrders"></div>
+</div>
+<div id="staffStockTab" class="card hidden">
+<h3>Stock - Add/Edit Qty, Price, Availability</h3>
+<input id="sPName" class="input" placeholder="Product Name">
+<input id="sPQty" type="number" class="input" placeholder="Quantity">
+<input id="sPPrice" type="number" class="input" placeholder="Price UGX">
+<select id="sPCat" class="input"><option>printing</option><option>stationery</option><option>school</option></select>
+<select id="sPAvail" class="input"><option value="true">Available</option><option value="false">Out of Stock</option></select>
+<button class="btn btn-s" onclick="staffAddProduct()">Add/Update Stock</button>
+<div id="staffStockList" style="margin-top:12px"></div>
+</div>
+<div id="staffPrintTab" class="card hidden">
+<h3>Print Jobs</h3>
 <div id="staffPrintJobs"></div>
 </div>
-
-<div id="adminView" class="card hidden role-admin">
-<h2>Admin - Full Control</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn btn-primary" onclick="adminTab('staff')">Staff WhatsApp Invite</button>
-<button class="btn btn-primary" onclick="adminTab('products')">Products</button>
-<button class="btn btn-primary" onclick="adminTab('orders')">Orders</button>
+<div id="staffCustomersTab" class="card hidden">
+<h3>Customers - Chat & Call</h3>
+<div id="staffCustomersList"></div>
 </div>
-
-<div id="adminStaffTab" class="card">
-<h3>Invite Staff via WhatsApp - Random Password</h3>
-<input id="staffName" class="input" placeholder="Staff Name">
+<div id="staffProfileTab" class="card hidden">
+<h3>Staff Profile - Reset Password</h3>
+<input id="staffOldPass" type="password" class="input" placeholder="Old Password">
+<input id="staffNew1" type="password" class="input" placeholder="New Password">
+<input id="staffNew2" type="password" class="input" placeholder="Confirm">
+<button class="btn btn-p" onclick="staffResetPassword()" style="width:100%">Reset Password</button>
+<button class="btn btn-d" onclick="logout()" style="width:100%;margin-top:8px">Logout</button>
+</div>
+</div><div id="adminView" class="hidden">
+<div class="nav-tabs">
+<button class="btn btn-p" onclick="adminTab('dash')">Dashboard</button>
+<button class="btn btn-o" onclick="adminTab('customers')">Manage Customers</button>
+<button class="btn btn-o" onclick="adminTab('invite')">Invite Staff</button>
+<button class="btn btn-o" onclick="adminTab('manageStaff')">Manage Staff</button>
+<button class="btn btn-o" onclick="adminTab('stock')">Manage Stock</button>
+<button class="btn btn-o" onclick="adminTab('orders')">Orders</button>
+<button class="btn btn-o" onclick="adminTab('settings')">Settings</button>
+</div>
+<div id="adminDash" class="card">
+<h2>Admin Dashboard - Full Control</h2>
+<div class="stats">
+<div class="stat"><b id="adminTotalSales">UGX 0</b><small>Total Sales</small></div>
+<div class="stat"><b id="adminTotalOrders">0</b><small>Orders</small></div>
+<div class="stat"><b id="adminTotalCustomers">0</b><small>Customers</small></div>
+<div class="stat"><b id="adminTotalStaff">0</b><small>Staff</small></div>
+</div>
+<button class="btn btn-p" onclick="loadAllOrders()">Refresh</button>
+<button class="btn btn-d" onclick="logout()">Logout</button>
+</div>
+<div id="adminCustomersTab" class="card hidden">
+<h3>Manage Customers - Reset Password Help</h3>
+<div id="customersList"></div>
+</div>
+<div id="adminInviteTab" class="card hidden">
+<h3>Invite Staff - WhatsApp + Random Password</h3>
+<input id="staffName" class="input" placeholder="Staff Full Name e.g. John Ouma">
 <input id="staffPhone" class="input" placeholder="WhatsApp Number e.g. 256764316177">
-<select id="staffRole" class="input"><option>Cashier</option><option>Stock Manager</option><option>Printing Operator</option></select>
-<button class="btn btn-success" onclick="inviteStaff()" style="width:100%">Generate Random Password + Invite via WhatsApp</button>
-<div id="inviteResult"></div>
-<div id="staffList"></div>
+<select id="staffRole" class="input"><option>Cashier</option><option>Stock Manager</option><option>Printing Operator</option><option>Sales</option></select>
+<button class="btn btn-s" onclick="inviteStaff()" style="width:100%">Generate Random Password + Invite via WhatsApp</button>
+<div id="inviteResult" style="margin-top:12px"></div>
+<div id="staffList" style="margin-top:12px"></div>
 </div>
-
-<div id="adminProductsTab" class="card hidden">
-<h3>Add Product</h3>
-<input id="pName" class="input" placeholder="Product Name">
-<input id="pPrice" class="input" type="number" placeholder="Price UGX">
-<input id="pCat" class="input" placeholder="Category">
+<div id="adminManageStaffTab" class="card hidden">
+<h3>Manage Staff - Edit / Remove / Reset Password</h3>
+<div id="manageStaffList"></div>
+</div>
+<div id="adminStockTab" class="card hidden">
+<h3>Manage Stock - Add/Edit Name, Qty, Category, Price, Availability</h3>
+<input id="pName" class="input" placeholder="Stock Name">
+<input id="pQty" type="number" class="input" placeholder="Quantity">
+<input id="pPrice" type="number" class="input" placeholder="Price UGX">
+<input id="pCat" class="input" placeholder="Category printing/stationery/school">
 <input id="pImage" class="input" placeholder="Image URL">
-<button class="btn btn-success" onclick="addProduct()">Add Product</button>
+<select id="pAvail" class="input"><option value="true">Available</option><option value="false">Out of Stock</option></select>
+<button class="btn btn-s" onclick="addProduct()" style="width:100%">Add/Update Stock</button>
+<div id="adminStockList" style="margin-top:12px"></div>
 </div>
-
 <div id="adminOrdersTab" class="card hidden">
-<h3>All Orders</h3>
+<h3>All Orders - Confirm Payment, Give Status, WhatsApp & Call</h3>
 <div id="allOrdersList"></div>
+</div>
+<div id="adminSettingsTab" class="card hidden">
+<h3>Settings - Business Info, MoMo, Logo</h3>
+<input id="setMoMo" class="input" placeholder="MoMo Number e.g. 0764316177">
+<input id="setLogoUrl" class="input" placeholder="Logo Image URL">
+<button class="btn btn-s" onclick="saveSettings()" style="width:100%">Save Settings</button>
+<p>Admin login hidden - Tap logo 5 times. Default admin pass admin123</p>
 </div>
 </div>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyD4qXv3z3z3z3z3z3z3z3z3z3z3z3z3z3z3",authDomain:"ctts-rogom-centre.firebaseapp.com",projectId:"ctts-rogom-centre",storageBucket:"ctts-rogom-centre.appspot.com",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
-firebase.initializeApp(firebaseConfig);
-const db=firebase.firestore();
+try{const s=localStorage.getItem('firebaseConfig_real');if(s) Object.assign(firebaseConfig,JSON.parse(s));}catch(e){}
+firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
 let currentUser=JSON.parse(localStorage.getItem('ctts_user')||'null');
 let isLoginMode=true;let cart=JSON.parse(localStorage.getItem('ctts_cart')||'[]');
-let products=JSON.parse(localStorage.getItem('ctts_products')||'[]');
-let currentCat='all';let logoTaps=0;let pendingPrintFile=null;
-if(products.length===0){products=[{id:'1',name:'Box File',price:5000,cat:'stationery',image:'https://via.placeholder.com/200?text=Box+File',real:false},{id:'2',name:'Photocopy A4',price:200,cat:'printing',image:'https://via.placeholder.com/200?text=Photocopy',real:false},{id:'3',name:'School Uniform',price:35000,cat:'school',image:'https://via.placeholder.com/200?text=Uniform',real:false},{id:'4',name:'Pen Bic',price:1000,cat:'stationery',image:'https://via.placeholder.com/200?text=Pen',real:false}];}
+let products=JSON.parse(localStorage.getItem('ctts_products')||'[]');let currentCat='all';let logoTaps=0;let pendingPrintFile=null;
+if(products.length===0){products=[{id:'1',name:'Box File',price:5000,qty:50,cat:'stationery',image:'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300',avail:true},{id:'2',name:'Photocopy A4',price:200,qty:1000,cat:'printing',image:'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300',avail:true},{id:'3',name:'School Uniform',price:35000,qty:20,cat:'school',image:'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300',avail:true},{id:'4',name:'Pen Bic',price:1000,qty:200,cat:'stationery',image:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300',avail:true}];}
 function saveLocal(){localStorage.setItem('ctts_cart',JSON.stringify(cart));localStorage.setItem('ctts_products',JSON.stringify(products));updateCounts();}
-function updateCounts(){document.getElementById('cartCount').innerText=cart.length;if(currentUser)document.getElementById('authBtn').innerText=currentUser.username+' Logout';if(currentUser&&currentUser.role==='staff')document.getElementById('staffBtn').classList.remove('hidden');if(currentUser&&currentUser.role==='admin')document.getElementById('adminBtn').classList.remove('hidden');}
-function showView(v){['shop','cart','myorders','auth','staff','admin','forcePass'].forEach(x=>document.getElementById(x+'View').classList.add('hidden'));document.getElementById(v+'View').classList.remove('hidden');if(v==='shop')renderProducts();if(v==='cart')renderCart();if(v==='myorders')loadMyOrders();if(v==='admin')loadAllOrders();}
-function tapLogo(){logoTaps++;if(logoTaps>=5){logoTaps=0;showView('admin');}setTimeout(()=>logoTaps=0,2000);}
-function renderProducts(){const q=document.getElementById('search').value.toLowerCase();const grid=document.getElementById('productsGrid');grid.innerHTML='';products.filter(p=>(currentCat==='all'||p.cat===currentCat)&&p.name.toLowerCase().includes(q)).forEach(p=>{grid.innerHTML+=`<div class="product ${p.real?'real':''}"><img src="${p.image}"><div class="product-body"><b>${p.name}</b><br>UGX ${p.price}<br><button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="addToCart('${p.id}')">Shop Now - Works</button></div></div>`;});}
+function updateCounts(){document.getElementById('cartCount').innerText=cart.length;if(currentUser){document.getElementById('authBtn').innerText=currentUser.username;document.getElementById('custName').innerText=currentUser.username;document.getElementById('staffName').innerText=currentUser.username;}}
+function showView(v){['landing','shop','cart','customer','auth','forcePass','staff','admin'].forEach(x=>{const el=document.getElementById(x+'View');if(el) el.classList.add('hidden');});document.getElementById(v+'View').classList.remove('hidden');if(v==='shop') renderProducts();if(v==='cart') renderCart();if(v==='customer') loadMyOrders();if(v==='staff') loadStaffOrders();if(v==='admin') loadAllOrders();}
+function tapLogo(){logoTaps++;if(logoTaps>=5){logoTaps=0;if(currentUser&&currentUser.role==='admin'){showView('admin');}else{const p=prompt('Enter Admin Password:');if(p==='admin123'){currentUser={username:'admin',role:'admin'};localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('admin');}}}setTimeout(()=>logoTaps=0,2500);}
+function openWhatsApp(phone,msg){window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');}
+function renderProducts(){const q=(document.getElementById('search')?.value||'').toLowerCase();const grid=document.getElementById('productsGrid');if(!grid) return;grid.innerHTML='';products.filter(p=>(currentCat==='all'||p.cat===currentCat)&&p.name.toLowerCase().includes(q)&&p.avail!==false).forEach(p=>{grid.innerHTML+=`<div class="product" style="position:relative"><div class="badge-real">REAL</div><img src="${p.image}"><div class="product-body"><b>${p.name}</b><br><small>${p.cat} Qty:${p.qty}</small><br><b style="color:#2563eb">UGX ${Number(p.price).toLocaleString()}</b><br><button class="btn btn-p" style="width:100%;margin-top:8px" onclick="addToCart('${p.id}')">Shop Now</button><br><button class="btn btn-o" style="width:100%;margin-top:4px" onclick="openWhatsApp('256764316177','I want ${p.name}')">WhatsApp</button></div></div>`;});}
 function filterCat(c){currentCat=c;renderProducts();}
-function addToCart(id){if(!currentUser){alert('Please Login!');showView('auth');return;}const p=products.find(x=>x.id===id);cart.push({...p,cartId:Date.now()});saveLocal();alert(p.name+' added');}
-function renderCart(){const div=document.getElementById('cartItems');div.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:6px"><span>${c.name} - UGX ${c.price}</span><button onclick="cart.splice(${i},1);saveLocal();renderCart()">X</button></div>`).join('');const total=cart.reduce((s,c)=>s+Number(c.price),0);document.getElementById('cartTotal').innerText='Total: UGX '+total;}
-function handlePrintUpload(input){const file=input.files[0];if(!file)return;document.getElementById('printFileName').innerText='Selected: '+file.name;const reader=new FileReader();reader.onload=e=>{pendingPrintFile={name:file.name,type:file.type,data:e.target.result};};reader.readAsDataURL(file);}
-function placeOrder(){if(cart.length===0){alert('Cart empty');return;}const tx=document.getElementById('txId').value;if(!tx){alert('Enter Tx ID');return;}const total=cart.reduce((s,c)=>s+Number(c.price),0);const order={id:'ORD'+Date.now(),user:currentUser.username,items:cart,total:total,txId:tx,status:'Pending',printJob:pendingPrintFile,printNote:document.getElementById('printNote').value,date:new Date().toISOString()};db.collection('orders').doc(order.id).set(order).then(()=>{alert('Order Placed! '+order.id);cart=[];pendingPrintFile=null;saveLocal();showView('myorders');}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]');orders.push(order);localStorage.setItem('orders',JSON.stringify(orders));alert('Order Placed locally! '+order.id);cart=[];saveLocal();showView('myorders');});}
-function loadMyOrders(){db.collection('orders').where('user','==',currentUser?.username||'').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card"><b>${o.id}</b> - UGX ${o.total} - ${o.status}<br><button class="btn btn-success" onclick="downloadReceipt('${o.id}')">Download Receipt PDF</button> ${o.printJob?'<br>Print: '+o.printJob.name:''}</div>`;});document.getElementById('myOrdersList').innerHTML=html||'No orders';}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]').filter(o=>o.user===currentUser.username);document.getElementById('myOrdersList').innerHTML=orders.map(o=>`<div class="card"><b>${o.id}</b> - UGX ${o.total} - ${o.status}<br><button class="btn btn-success" onclick="downloadReceipt('${o.id}')">Download Receipt PDF</button></div>`).join('')||'No orders';});}
-function downloadReceipt(orderId){const {jsPDF}=window.jspdf;const doc=new jsPDF();doc.text('CTTS Rogom Centre - Receipt',20,20);doc.text('Order: '+orderId,20,30);doc.text('Customer: '+(currentUser?.username||''),20,40);doc.text('Date: '+new Date().toLocaleString(),20,50);doc.text('MoMo Pay: 0764316177',20,60);doc.text('Thank you for shopping at CTTS!',20,80);doc.save('Receipt-'+orderId+'.pdf');}
-function toggleAuthMode(){isLoginMode=!isLoginMode;document.getElementById('authTitle').innerText=isLoginMode?'Login to Shop':'Register New Account';document.getElementById('authActionBtn').innerText=isLoginMode?'Login':'Register';}
-function handleAuth(){const u=document.getElementById('authUser').value.trim();const p=document.getElementById('authPass').value.trim();if(!u||!p){alert('Enter username/password');return;}if(isLoginMode){db.collection('users').where('username','==',u).where('password','==',p).get().then(snap=>{if(snap.empty){alert('Invalid login');return;}const userData=snap.docs[0].data();if(userData.mustChangePassword){currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));document.getElementById('authMsg').innerText='Welcome '+u+'!';updateCounts();setTimeout(()=>showView('shop'),1000);}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let found=users.find(x=>x.username===u&&x.password===p);if(!found&&u==='admin'&&p==='admin123'){found={username:'admin',role:'admin'};}if(found){if(found.mustChangePassword){currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));updateCounts();showView('shop');}else alert('Invalid');});}else{db.collection('users').doc(u).set({username:u,password:p,role:'customer',date:new Date().toISOString()}).then(()=>{alert('Registered! Now Login');toggleAuthMode();}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push({username:u,password:p,role:'customer'});localStorage.setItem('users',JSON.stringify(users));alert('Registered locally! Now Login');toggleAuthMode();});}}
-function changeDefaultPassword(){const n1=document.getElementById('newPass1').value;const n2=document.getElementById('newPass2').value;if(!n1||n1!==n2){alert('Passwords not match');return;}db.collection('users').doc(currentUser.username).update({password:n1,mustChangePassword:false}).then(()=>{currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Password changed!');updateCounts();showView(currentUser.role==='staff'?'staff':'shop');}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let idx=users.findIndex(x=>x.username===currentUser.username);if(idx>=0){users[idx].password=n1;users[idx].mustChangePassword=false;localStorage.setItem('users',JSON.stringify(users));}currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Password changed locally!');showView('staff');});}
-function inviteStaff(){const name=document.getElementById('staffName').value.trim();const phone=document.getElementById('staffPhone').value.trim().replace(/[^0-9]/g,'');const role=document.getElementById('staffRole').value;if(!name||!phone){alert('Enter name and phone');return;}const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$!';let pass='';for(let i=0;i<8;i++)pass+=chars.charAt(Math.floor(Math.random()*chars.length));const token='INV'+Date.now();const username=name.toLowerCase().replace(/\s/g,'')+Math.floor(Math.random()*100);const staffData={username:username,password:pass,displayName:name,phone:phone,role:'staff',staffRole:role,mustChangePassword:true,inviteToken:token,date:new Date().toISOString()};db.collection('users').doc(username).set(staffData).then(()=>{finishInvite(name,phone,username,pass,token);}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push(staffData);localStorage.setItem('users',JSON.stringify(users));finishInvite(name,phone,username,pass,token);});}
-function finishInvite(name,phone,username,pass,token){const inviteLink='https://hechemizt.github.io/ctts-admin/?invite='+token;const msg=`Hello ${name}! You are invited to join CTTS Rogom Centre Staff.%0A%0ALogin Link: ${inviteLink}%0AUsername: ${username}%0ADefault Password: ${pass}%0A%0APlease login and change password.`;const waLink=`https://wa.me/${phone}?text=${msg}`;document.getElementById('inviteResult').innerHTML=`<div class="card" style="background:#dcfce7">Staff ${name} created!<br>Username: <b>${username}</b><br>Random Password: <b>${pass}</b><br><a href="${waLink}" target="_blank" class="btn btn-success" style="display:inline-block;margin-top:8px">Send WhatsApp Invite Now</a></div>`;window.open(waLink,'_blank');}
-function adminTab(t){['Products','Orders','Staff'].forEach(x=>document.getElementById('admin'+x+'Tab').classList.add('hidden'));document.getElementById('admin'+t.charAt(0).toUpperCase()+t.slice(1)+'Tab').classList.remove('hidden');}
-function addProduct(){const name=document.getElementById('pName').value;const price=document.getElementById('pPrice').value;const cat=document.getElementById('pCat').value||'stationery';const imageUrl=document.getElementById('pImage').value||'https://via.placeholder.com/200?text='+encodeURIComponent(name);if(!name||!price){alert('Enter name and price');return;}const prod={id:Date.now().toString(),name,price,cat,image:imageUrl,real:true};products.push(prod);saveLocal();renderProducts();alert('Product Added - REAL');}
-function loadAllOrders(){db.collection('orders').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card">${o.id} - ${o.user} - UGX ${o.total} - ${o.status} ${o.printJob?'<br>Print: '+o.printJob.name:''}<br><button class="btn btn-outline" onclick="approveOrder('${o.id}')">Approve Paid</button></div>`;});document.getElementById('allOrdersList').innerHTML=html;});}
-function loadAllOrdersForStaff(){db.collection('orders').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card">${o.id} - ${o.user} - UGX ${o.total} - ${o.status} ${o.printJob?' Print: '+o.printJob.name:''}</div>`;});document.getElementById('staffOrders').innerHTML=html;});}
-function approveOrder(id){db.collection('orders').doc(id).update({status:'Paid'}).then(()=>{alert('Approved');loadAllOrders();});}
+function addToCart(id){if(!currentUser){alert('Please Login to Shop!');showView('auth');return;}const p=products.find(x=>x.id===id);cart.push({...p,cartId:Date.now()});saveLocal();alert(p.name+' added');}
+function renderCart(){const div=document.getElementById('cartItems');if(!div) return;div.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:8px"><span>${c.name} - UGX ${c.price}</span><button onclick="cart.splice(${i},1);saveLocal();renderCart()">X</button></div>`).join('')||'Cart empty';const total=cart.reduce((s,c)=>s+Number(c.price),0);document.getElementById('cartTotal').innerText='Total: UGX '+total.toLocaleString();}
+function handlePrintUpload(input){const file=input.files[0];if(!file) return;document.getElementById('printFileName').innerText=file.name;const r=new FileReader();r.onload=e=>{pendingPrintFile={name:file.name,type:file.type,size:file.size,data:e.target.result};};r.readAsDataURL(file);}
+function handleCustUpload(input){const file=input.files[0];if(!file) return;document.getElementById('custFileName').innerText=file.name;const r=new FileReader();r.onload=e=>{const fd={id:Date.now().toString(),name:file.name,type:file.type,size:file.size,data:e.target.result,user:currentUser.username,date:new Date().toISOString()};let files=JSON.parse(localStorage.getItem('cust_files')||'[]');files.push(fd);localStorage.setItem('cust_files',JSON.stringify(files));db.collection('customer_files').doc(fd.id).set(fd).catch(()=>{});alert('File uploaded');loadCustFiles();};r.readAsDataURL(file);}
+function loadCustFiles(){let files=JSON.parse(localStorage.getItem('cust_files')||'[]').filter(f=>f.user===currentUser?.username);const div=document.getElementById('custFilesList');if(div) div.innerHTML=files.map(f=>`<div class="card" style="margin:6px 0"><b>${f.name}</b> <button onclick="downloadFile('${f.id}')">Download</button></div>`).join('')||'No files';}
+function downloadFile(id){let files=JSON.parse(localStorage.getItem('cust_files')||'[]');const f=files.find(x=>x.id===id);if(!f) return;const a=document.createElement('a');a.href=f.data;a.download=f.name;a.click();}
+function placeOrder(){if(cart.length===0){alert('Cart empty');return;}const tx=document.getElementById('txId').value;if(!tx){alert('Enter MoMo Tx ID');return;}const total=cart.reduce((s,c)=>s+Number(c.price),0);const order={id:'ORD'+Date.now(),user:currentUser.username,phone:currentUser.phone||'',items:cart,total:total,txId:tx,status:'Pending',printJob:pendingPrintFile,printNote:document.getElementById('printNote').value,date:new Date().toISOString()};db.collection('orders').doc(order.id).set(order).then(()=>{alert('Order Placed ID:'+order.id);cart=[];pendingPrintFile=null;saveLocal();showView('customer');custTab('orders');}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]');orders.push(order);localStorage.setItem('orders',JSON.stringify(orders));alert('Order Placed locally ID:'+order.id);cart=[];saveLocal();showView('customer');});}
+function custTab(t){['dash','orders','upload','rating','profile'].forEach(x=>{const el=document.getElementById('cust'+x.charAt(0).toUpperCase()+x.slice(1));if(el) el.classList.add('hidden');});document.getElementById('cust'+t.charAt(0).toUpperCase()+t.slice(1)).classList.remove('hidden');if(t==='orders') loadMyOrders();if(t==='upload') loadCustFiles();if(t==='rating') loadRatings();}
+function loadMyOrders(){db.collection('orders').where('user','==',currentUser?.username||'').get().then(snap=>{let html='';let total=0;snap.forEach(doc=>{const o=doc.data();total+=Number(o.total);html+=`<div class="card" style="margin:8px 0"><b>${o.id}</b> - UGX ${o.total} - ${o.status}<br><small>Tx:${o.txId} ${new Date(o.date).toLocaleString()}</small><br><button class="btn btn-s" onclick="downloadReceipt('${o.id}','${o.total}')">Download Receipt PDF</button> <button class="btn btn-w" onclick="openWhatsApp('256764316177','Status of ${o.id}?')">Ask Status</button></div>`;});document.getElementById('myOrdersList').innerHTML=html||'No orders';document.getElementById('custOrderCount').innerText=snap.size;document.getElementById('custTotalSpent').innerText='UGX '+total.toLocaleString();}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]').filter(o=>o.user===currentUser?.username);document.getElementById('myOrdersList').innerHTML=orders.map(o=>`<div class="card"><b>${o.id}</b> - UGX ${o.total} - ${o.status}</div>`).join('')||'No orders';});}
+function downloadReceipt(orderId,total){const {jsPDF}=window.jspdf;const doc=new jsPDF();doc.text('CTTS Rogom Centre - Receipt',20,20);doc.text('Order ID:'+orderId,20,30);doc.text('Customer:'+(currentUser?.username||''),20,40);doc.text('Date:'+new Date().toLocaleString(),20,50);doc.text('Total: UGX '+(total||''),20,60);doc.text('MoMo: 0764316177',20,70);doc.text('Thank you for shopping at CTTS!',20,90);doc.save('CTTS-Receipt-'+orderId+'.pdf');}
+function toggleAuthMode(){isLoginMode=!isLoginMode;document.getElementById('authTitle').innerText=isLoginMode?'Login to Shop':'Register';document.getElementById('authActionBtn').innerText=isLoginMode?'Login':'Register';}
+function handleAuth(){const u=document.getElementById('authUser').value.trim();const p=document.getElementById('authPass').value.trim();if(!u||!p){alert('Enter username and password');return;}if(isLoginMode){db.collection('users').where('username','==',u).where('password','==',p).get().then(snap=>{if(snap.empty){alert('Invalid login');return;}const userData=snap.docs[0].data();if(userData.mustChangePassword){currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));updateCounts();if(userData.role==='admin') showView('admin');else if(userData.role==='staff') showView('staff');else{showView('customer');custTab('dash');}}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let found=users.find(x=>x.username===u&&x.password===p);if(!found&&u==='admin'&&p==='admin123') found={username:'admin',role:'admin'};if(found){if(found.mustChangePassword){currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));updateCounts();if(found.role==='admin') showView('admin');else if(found.role==='staff') showView('staff');else{showView('customer');custTab('dash');}}else alert('Invalid login');});}else{const newUser={username:u,password:p,role:'customer',date:new Date().toISOString()};db.collection('users').doc(u).set(newUser).then(()=>{alert('Registered! Now Login');toggleAuthMode();}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push(newUser);localStorage.setItem('users',JSON.stringify(users));alert('Registered locally!');toggleAuthMode();});}}
+function changeDefaultPassword(){const n1=document.getElementById('forceNew1').value;const n2=document.getElementById('forceNew2').value;if(!n1||n1.length<6){alert('Min 6 chars');return;}if(n1!==n2){alert('Not match');return;}db.collection('users').doc(currentUser.username).update({password:n1,mustChangePassword:false}).then(()=>{currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Password changed!');if(currentUser.role==='staff') showView('staff');else{showView('customer');custTab('dash');}}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let idx=users.findIndex(x=>x.username===currentUser.username);if(idx>=0){users[idx].password=n1;users[idx].mustChangePassword=false;localStorage.setItem('users',JSON.stringify(users));}currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView(currentUser.role==='staff'?'staff':'customer');});}
+function resetPassword(){const oldP=document.getElementById('oldPass').value;const n1=document.getElementById('newPass1').value;const n2=document.getElementById('newPass2').value;if(currentUser.password!==oldP){alert('Old wrong. Contact admin WhatsApp');return;}if(n1!==n2||n1.length<6){alert('Not match or short');return;}db.collection('users').doc(currentUser.username).update({password:n1}).then(()=>{currentUser.password=n1;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Reset!');});}
+function inviteStaff(){const name=document.getElementById('staffName').value.trim();const phone=document.getElementById('staffPhone').value.trim().replace(/[^0-9]/g,'');const role=document.getElementById('staffRole').value;if(!name||!phone){alert('Enter name and WhatsApp');return;}const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$';let pass='';for(let i=0;i<8;i++) pass+=chars.charAt(Math.floor(Math.random()*chars.length));const username=name.toLowerCase().replace(/\s/g,'')+Math.floor(Math.random()*100);const staffData={username:username,password:pass,displayName:name,phone:phone,role:'staff',staffRole:role,mustChangePassword:true,date:new Date().toISOString()};db.collection('users').doc(username).set(staffData).then(()=>{finishInvite(name,phone,username,pass);}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push(staffData);localStorage.setItem('users',JSON.stringify(users));finishInvite(name,phone,username,pass);});}
+function finishInvite(name,phone,username,pass){const siteLink='https://hechemizt.github.io/ctts-admin/';const msg=`Hello ${name}! You are invited to join CTTS Rogom Centre Staff. Login: ${siteLink} Username: ${username} Default Password: ${pass} You MUST change password after first login.`;const waLink=`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;document.getElementById('inviteResult').innerHTML=`<div class="card" style="background:#dcfce7">Staff ${name} created! Username: ${username} Pass: ${pass} <a href="${waLink}" target="_blank" class="btn btn-w">Send WhatsApp Invite Now</a></div>`;window.open(waLink,'_blank');loadStaffList();}
+function loadStaffList(){db.collection('users').where('role','==','staff').get().then(snap=>{let html='';snap.forEach(d=>{const s=d.data();html+=`<div style="border-bottom:1px solid #eee;padding:8px">${s.displayName} (${s.staffRole}) - ${s.username} - ${s.phone} <button onclick="resetStaffPass('${s.username}')">Reset Pass</button> <button onclick="removeStaff('${s.username}')">Remove</button></div>`;});document.getElementById('staffList').innerHTML=html||'No staff';document.getElementById('manageStaffList').innerHTML=html;}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]').filter(u=>u.role==='staff');document.getElementById('staffList').innerHTML=users.map(s=>`<div>${s.displayName} - ${s.username}</div>`).join('');});}
+function resetStaffPass(username){const newPass=prompt('New password for '+username);if(!newPass) return;db.collection('users').doc(username).update({password:newPass,mustChangePassword:true}).then(()=>{alert('Reset!');loadStaffList();});}
+function removeStaff(username){if(!confirm('Remove '+username+'?')) return;db.collection('users').doc(username).delete().then(()=>{loadStaffList();});}
+function adminTab(t){['dash','customers','invite','manageStaff','stock','orders','settings'].forEach(x=>{const el=document.getElementById('admin'+x.charAt(0).toUpperCase()+x.slice(1)+'Tab');if(el) el.classList.add('hidden');});document.getElementById('admin'+t.charAt(0).toUpperCase()+t.slice(1)+'Tab').classList.remove('hidden');if(t==='customers') loadCustomers();if(t==='invite'||t==='manageStaff') loadStaffList();if(t==='stock') renderAdminStock();if(t==='orders') loadAllOrders();}
+function staffTab(t){['dash','orders','stock','print','customers','profile'].forEach(x=>{const el=document.getElementById('staff'+x.charAt(0).toUpperCase()+x.slice(1)+'Tab');if(el) el.classList.add('hidden');});document.getElementById('staff'+t.charAt(0).toUpperCase()+t.slice(1)+'Tab').classList.remove('hidden');if(t==='orders') loadStaffOrders();if(t==='stock') renderStaffStock();if(t==='print') loadPrintJobs();if(t==='customers') loadCustomersForStaff();}
+function renderAdminStock(){const div=document.getElementById('adminStockList');if(!div) return;div.innerHTML=products.map((p,i)=>`<div style="border-bottom:1px solid #eee;padding:8px"><b>${p.name}</b> - UGX ${p.price} - Qty:${p.qty} <button onclick="editProduct(${i})">Edit</button> <button onclick="deleteProduct(${i})">Delete</button></div>`).join('');}
+function renderStaffStock(){renderAdminStock();document.getElementById('staffStockList').innerHTML=document.getElementById('adminStockList').innerHTML;}
+function addProduct(){const name=document.getElementById('pName').value;const price=document.getElementById('pPrice').value;const qty=document.getElementById('pQty').value||0;const cat=document.getElementById('pCat').value||'stationery';const imageUrl=document.getElementById('pImage').value||'https://via.placeholder.com/200?text='+encodeURIComponent(name);const avail=document.getElementById('pAvail').value==='true';if(!name||!price){alert('Enter name and price');return;}const prod={id:Date.now().toString(),name,price,qty,cat,image:imageUrl,avail};products.push(prod);saveLocal();renderProducts();renderAdminStock();alert('Stock Added REAL');}
+function staffAddProduct(){addProduct();}
+function editProduct(i){const p=products[i];document.getElementById('pName').value=p.name;document.getElementById('pPrice').value=p.price;document.getElementById('pQty').value=p.qty;document.getElementById('pCat').value=p.cat;products.splice(i,1);saveLocal();renderAdminStock();}
+function deleteProduct(i){if(!confirm('Delete '+products[i].name+'?')) return;products.splice(i,1);saveLocal();renderAdminStock();renderProducts();}
+function loadAllOrders(){db.collection('orders').orderBy('date','desc').limit(50).get().then(snap=>{let html='';let total=0;snap.forEach(doc=>{const o=doc.data();total+=Number(o.total);html+=`<div class="card" style="margin:6px 0"><b>${o.id}</b> - ${o.user} - UGX ${o.total} - ${o.status}<br><small>Tx:${o.txId}</small><br><small>${o.items.map(i=>i.name).join(', ')}</small><br>${o.printJob?`<small>Print:${o.printJob.name}</small><br>`:''}<button class="btn btn-s" onclick="approveOrder('${o.id}')">Confirm Payment</button><button class="btn btn-p" onclick="updateOrderStatus('${o.id}','Delivered')">Mark Delivered</button><button class="btn btn-w" onclick="openWhatsApp('${o.phone||'256764316177'}','Order ${o.id} is ${o.status}')">WhatsApp</button><button class="btn btn-o" onclick="downloadReceipt('${o.id}','${o.total}')">Receipt</button></div>`;});document.getElementById('allOrdersList').innerHTML=html||'No orders';document.getElementById('adminTotalSales').innerText='UGX '+total.toLocaleString();document.getElementById('adminTotalOrders').innerText=snap.size;}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]');document.getElementById('allOrdersList').innerHTML=orders.map(o=>`<div class="card">${o.id} - ${o.user} - UGX ${o.total}</div>`).join('')||'No orders';});}
+function loadStaffOrders(){loadAllOrders();setTimeout(()=>{document.getElementById('staffOrders').innerHTML=document.getElementById('allOrdersList').innerHTML;},1000);}
+function loadPrintJobs(){db.collection('orders').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();if(o.printJob) html+=`<div class="card"><b>${o.id}</b> - ${o.user}<br>File:${o.printJob.name}<br>Note:${o.printNote||''}</div>`;});document.getElementById('staffPrintJobs').innerHTML=html||'No print jobs';});}
+function approveOrder(id){db.collection('orders').doc(id).update({status:'Paid'}).then(()=>{alert('Confirmed');loadAllOrders();});}
+function updateOrderStatus(id,status){db.collection('orders').doc(id).update({status:status}).then(()=>{alert('Updated to '+status);loadAllOrders();});}
+function loadCustomers(){db.collection('users').where('role','==','customer').get().then(snap=>{let html='';snap.forEach(doc=>{const u=doc.data();html+=`<div style="border-bottom:1px solid #eee;padding:8px">${u.username} <button onclick="resetStaffPass('${u.username}')">Reset Pass</button></div>`;});document.getElementById('customersList').innerHTML=html||'No customers';document.getElementById('adminTotalCustomers').innerText=snap.size;});}
+function loadCustomersForStaff(){loadCustomers();setTimeout(()=>{document.getElementById('staffCustomersList').innerHTML=document.getElementById('customersList').innerHTML;},800);}
+function submitRating(){const stars=document.getElementById('ratingStars').value;const comment=document.getElementById('ratingComment').value;if(!comment){alert('Enter comment');return;}const rating={id:Date.now().toString(),user:currentUser.username,stars,comment,date:new Date().toISOString()};db.collection('ratings').doc(rating.id).set(rating).then(()=>{alert('Rating submitted');});}
+function loadRatings(){db.collection('ratings').orderBy('date','desc').limit(20).get().then(snap=>{let html='';snap.forEach(doc=>{const r=doc.data();html+=`<div class="card"><b>${r.user}</b> - ${r.stars} stars<br>${r.comment}</div>`;});document.getElementById('ratingsList').innerHTML=html;});}
+function staffResetPassword(){const oldP=document.getElementById('staffOldPass').value;const n1=document.getElementById('staffNew1').value;const n2=document.getElementById('staffNew2').value;if(currentUser.password!==oldP){alert('Old wrong');return;}if(n1!==n2){alert('Not match');return;}db.collection('users').doc(currentUser.username).update({password:n1}).then(()=>{currentUser.password=n1;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Reset!');});}
+function saveSettings(){const settings={momo:document.getElementById('setMoMo').value,logo:document.getElementById('setLogoUrl').value};localStorage.setItem('ctts_settings',JSON.stringify(settings));alert('Saved');}
 function logout(){localStorage.removeItem('ctts_user');currentUser=null;location.reload();}
-updateCounts();renderProducts();
+updateCounts();
+if(currentUser){if(currentUser.role==='admin') showView('admin');else if(currentUser.role==='staff') showView('staff');else{showView('customer');custTab('dash');}}else{showView('landing');renderProducts();}
+loadStaffList();
 </script>
 </body>
 </html>
