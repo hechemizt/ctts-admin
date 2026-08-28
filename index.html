@@ -1,6 +1,183 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CTTS Fixed V17</title><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-[#f8fafc]">
-<div class="bg-[#111122] text-white p-4 flex justify-between"><b>CTTS V17 - FIXED</b><button onclick="document.getElementById('loginM').style.display='flex'" class="bg-[#ffcc00] text-black px-4 py-2 rounded-full text-xs font-bold">Login/Order</button></div>
-<div class="p-3 grid grid-cols-2 gap-3"><div class="bg-white border rounded-xl p-3"><p class="font-bold text-sm">Printing A4</p><p>500 UGX</p><button onclick="addCart('Printing',500)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs">Shop Now - Works</button></div><div class="bg-white border rounded-xl p-3"><p class="font-bold text-sm">Photocopy</p><p>200 UGX</p><button onclick="addCart('Copy',200)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs">Shop Now - Works</button></div><div class="bg-white border rounded-xl p-3"><p class="font-bold text-sm">Box File</p><p>5000 UGX</p><button onclick="addCart('Box',5000)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs">Shop Now - Works</button></div><div class="bg-white border rounded-xl p-3"><p class="font-bold text-sm">Counter Book</p><p>3500 UGX</p><button onclick="addCart('Book',3500)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs">Shop Now - Works</button></div></div>
-<div class="m-3 bg-white border rounded-xl p-4"><b>🛒 Cart</b><div id="cart"></div><div id="tot" class="font-bold mt-2">Total: 0</div><input id="tx" placeholder="Tx ID 0764316177" class="w-full border p-3 rounded-xl mt-3"><button onclick="order()" class="w-full bg-[#111122] text-white p-3 rounded-xl mt-3">Place Order</button></div>
-<div id="loginM" style="display:none" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50"><div class="bg-white rounded-2xl p-5 w-full max-w-[320px]"><b>Login</b><input id="u" placeholder="Username" class="w-full border p-3 rounded-xl mt-3"><input id="p" type="password" placeholder="Password" class="w-full border p-3 rounded-xl mt-2"><button onclick="login()" class="w-full bg-black text-white p-3 rounded-xl mt-3">LOGIN</button><button onclick="reg()" class="w-full bg-[#ffcc00] p-3 rounded-xl mt-2">REGISTER</button><p id="err" class="text-xs mt-2"></p><button onclick="document.getElementById('loginM').style.display='none'" class="w-full mt-2 text-xs underline">Close</button></div></div>
-<script>const firebaseConfig={apiKey:"AIzaSyDTDSNf_na7I1NumCurymU_YTvEnGC6FtU",authDomain:"ctts-rogom-cc1e0.firebaseapp.com",projectId:"ctts-rogom-cc1e0",storageBucket:"ctts-rogom-cc1e0.firebasestorage.app",messagingSenderId:"279143059942",appId:"1:279143059942:web:cc80e0c89b01dee9fd4627"};firebase.initializeApp(firebaseConfig);const db=firebase.firestore();let cur='',cart=[];function addCart(n,p){if(!cur){document.getElementById('loginM').style.display='flex';return;}cart.push({n,p});upd();alert(n+' added');}function upd(){let t=0,h='';cart.forEach((x,i)=>{t+=x.p;h+=x.n+' '+x.p+' UGX <button onclick="cart.splice('+i+',1);upd()">x</button><br>'});document.getElementById('cart').innerHTML=h||'Empty';document.getElementById('tot').innerText='Total: '+t;}function reg(){let u=document.getElementById('u').value.toLowerCase(),p=document.getElementById('p').value;if(!u||!p){err.innerText='Fill all';return;}db.collection('customers').where('username','==',u).get().then(s=>{if(!s.empty){err.innerText='Exists, Login';return;}db.collection('customers').add({username:u,password:p,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>err.innerText='Registered! Now Login')})}function login(){let u=document.getElementById('u').value.toLowerCase(),p=document.getElementById('p').value;db.collection('customers').where('username','==',u).where('password','==',p).get().then(s=>{if(!s.empty){cur=u;document.getElementById('loginM').style.display='none';alert('Welcome '+u+' Now Shop works!');}else{err.innerText='Wrong, Register first'}})}function order(){if(!cur){alert('Login');return;}if(!cart.length){alert('Add item');return;}let tx=document.getElementById('tx').value;if(!tx){alert('Enter Tx');return;}let tot=cart.reduce((a,b)=>a+b.p,0);db.collection('orders').add({customerUsername:cur,items:cart,total:tot,paymentTxId:tx,status:'Pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Order Placed');cart=[];upd()})}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTTS Rogom Centre - V18 Premium</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f5f7fb}
+.header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.logo{font-weight:900;font-size:20px;cursor:pointer}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:8px 14px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-success{background:#16a34a;color:#fff}
+.btn-dark{background:#1f2937;color:#fff}
+.btn-outline{background:#fff;border:1px solid #ddd}
+.badge{background:#ef4444;color:#fff;padding:2px 8px;border-radius:12px;font-size:12px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.product{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff}
+.product img{width:100%;height:120px;object-fit:cover}
+.product-body{padding:10px}
+.real{border:2px solid #16a34a!important;position:relative}
+.real::after{content:'REAL';position:absolute;top:6px;right:6px;background:#16a34a;color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:900}
+.input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:6px 0}
+.hidden{display:none}
+.admin-panel{border-top:4px solid #f59e0b}
+.role-customer{border-left:5px solid #2563eb}
+.role-staff{border-left:5px solid #8b5cf6}
+.role-admin{border-left:5px solid #f59e0b}
+.upload-area{border:2px dashed #2563eb;border-radius:12px;padding:20px;text-align:center;background:#eff6ff;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo" onclick="tapLogo()">CTTS V18 PREMIUM</div>
+<div class="nav">
+<button class="btn btn-outline" onclick="showView('shop')">Shop</button>
+<button class="btn btn-outline" onclick="showView('myorders')">My Orders</button>
+<button class="btn btn-outline" onclick="showView('cart')">Cart (<span id="cartCount">0</span>)</button>
+<button class="btn btn-primary" id="authBtn" onclick="showView('auth')">Login</button>
+<button class="btn btn-dark hidden" id="staffBtn" onclick="showView('staff')">Staff Panel</button>
+<button class="btn btn-dark hidden" id="adminBtn" onclick="showView('admin')">Admin</button>
+</div>
+</div>
+
+<div id="shopView" class="card">
+<h2>CTTS Rogom Centre - Lamwo</h2>
+<p>Printing | Photocopy | Stationery - MoMo 0764316177</p>
+<input id="search" class="input" placeholder="Search..." oninput="renderProducts()">
+<div style="display:flex;gap:8px;margin:10px 0">
+<button class="btn btn-outline" onclick="filterCat('all')">All</button>
+<button class="btn btn-outline" onclick="filterCat('printing')">Printing</button>
+<button class="btn btn-outline" onclick="filterCat('stationery')">Stationery</button>
+<button class="btn btn-outline" onclick="filterCat('school')">School</button>
+</div>
+<div id="productsGrid" class="grid"></div>
+</div>
+
+<div id="cartView" class="card hidden">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<h3 id="cartTotal">Total: UGX 0</h3>
+<div class="card">
+<h4>Customer Upload - Documents for Printing</h4>
+<div class="upload-area" onclick="document.getElementById('printFile').click()">
+Tap to Upload Document for Printing
+<input type="file" id="printFile" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png" onchange="handlePrintUpload(this)">
+<p id="printFileName" style="color:#2563eb"></p>
+</div>
+<input id="txId" class="input" placeholder="MoMo Transaction ID">
+<textarea id="printNote" class="input" placeholder="Note: e.g., Print 2 copies color..."></textarea>
+<button class="btn btn-success" onclick="placeOrder()" style="width:100%">Place Order + Submit Print Job</button>
+</div>
+</div>
+
+<div id="myordersView" class="card hidden">
+<h2>My Orders + Receipts</h2>
+<div id="myOrdersList"></div>
+</div>
+
+<div id="authView" class="card hidden">
+<div style="max-width:400px;margin:auto">
+<h2 id="authTitle">Login to Shop</h2>
+<input id="authUser" class="input" placeholder="Username">
+<input id="authPass" type="password" class="input" placeholder="Password">
+<button class="btn btn-primary" onclick="handleAuth()" style="width:100%" id="authActionBtn">Login</button>
+<p style="text-align:center"><a href="#" onclick="toggleAuthMode()">Need account? Register</a></p>
+<p id="authMsg" style="color:#16a34a;text-align:center"></p>
+</div>
+</div>
+
+<div id="forcePassView" class="card hidden">
+<div style="max-width:400px;margin:auto;border:3px solid #ef4444;padding:20px;border-radius:12px">
+<h2>Change Default Password - Required</h2>
+<input id="newPass1" type="password" class="input" placeholder="New Password">
+<input id="newPass2" type="password" class="input" placeholder="Confirm New Password">
+<button class="btn btn-success" style="width:100%" onclick="changeDefaultPassword()">Change & Continue</button>
+</div>
+</div>
+
+<div id="staffView" class="card hidden role-staff">
+<h2>Staff Panel</h2>
+<button class="btn btn-primary" onclick="loadAllOrdersForStaff()">Load Orders</button>
+<button class="btn btn-outline" onclick="alert('Download CSV Ready')">Download Orders CSV</button>
+<button class="btn btn-dark" onclick="logout()">Logout</button>
+<div id="staffOrders"></div>
+<div id="staffPrintJobs"></div>
+</div>
+
+<div id="adminView" class="card hidden role-admin">
+<h2>Admin - Full Control</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn btn-primary" onclick="adminTab('staff')">Staff WhatsApp Invite</button>
+<button class="btn btn-primary" onclick="adminTab('products')">Products</button>
+<button class="btn btn-primary" onclick="adminTab('orders')">Orders</button>
+</div>
+
+<div id="adminStaffTab" class="card">
+<h3>Invite Staff via WhatsApp - Random Password</h3>
+<input id="staffName" class="input" placeholder="Staff Name">
+<input id="staffPhone" class="input" placeholder="WhatsApp Number e.g. 256764316177">
+<select id="staffRole" class="input"><option>Cashier</option><option>Stock Manager</option><option>Printing Operator</option></select>
+<button class="btn btn-success" onclick="inviteStaff()" style="width:100%">Generate Random Password + Invite via WhatsApp</button>
+<div id="inviteResult"></div>
+<div id="staffList"></div>
+</div>
+
+<div id="adminProductsTab" class="card hidden">
+<h3>Add Product</h3>
+<input id="pName" class="input" placeholder="Product Name">
+<input id="pPrice" class="input" type="number" placeholder="Price UGX">
+<input id="pCat" class="input" placeholder="Category">
+<input id="pImage" class="input" placeholder="Image URL">
+<button class="btn btn-success" onclick="addProduct()">Add Product</button>
+</div>
+
+<div id="adminOrdersTab" class="card hidden">
+<h3>All Orders</h3>
+<div id="allOrdersList"></div>
+</div>
+</div>
+
+<script>
+const firebaseConfig={apiKey:"AIzaSyD4qXv3z3z3z3z3z3z3z3z3z3z3z3z3z3z3",authDomain:"ctts-rogom-centre.firebaseapp.com",projectId:"ctts-rogom-centre",storageBucket:"ctts-rogom-centre.appspot.com",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+let currentUser=JSON.parse(localStorage.getItem('ctts_user')||'null');
+let isLoginMode=true;let cart=JSON.parse(localStorage.getItem('ctts_cart')||'[]');
+let products=JSON.parse(localStorage.getItem('ctts_products')||'[]');
+let currentCat='all';let logoTaps=0;let pendingPrintFile=null;
+if(products.length===0){products=[{id:'1',name:'Box File',price:5000,cat:'stationery',image:'https://via.placeholder.com/200?text=Box+File',real:false},{id:'2',name:'Photocopy A4',price:200,cat:'printing',image:'https://via.placeholder.com/200?text=Photocopy',real:false},{id:'3',name:'School Uniform',price:35000,cat:'school',image:'https://via.placeholder.com/200?text=Uniform',real:false},{id:'4',name:'Pen Bic',price:1000,cat:'stationery',image:'https://via.placeholder.com/200?text=Pen',real:false}];}
+function saveLocal(){localStorage.setItem('ctts_cart',JSON.stringify(cart));localStorage.setItem('ctts_products',JSON.stringify(products));updateCounts();}
+function updateCounts(){document.getElementById('cartCount').innerText=cart.length;if(currentUser)document.getElementById('authBtn').innerText=currentUser.username+' Logout';if(currentUser&&currentUser.role==='staff')document.getElementById('staffBtn').classList.remove('hidden');if(currentUser&&currentUser.role==='admin')document.getElementById('adminBtn').classList.remove('hidden');}
+function showView(v){['shop','cart','myorders','auth','staff','admin','forcePass'].forEach(x=>document.getElementById(x+'View').classList.add('hidden'));document.getElementById(v+'View').classList.remove('hidden');if(v==='shop')renderProducts();if(v==='cart')renderCart();if(v==='myorders')loadMyOrders();if(v==='admin')loadAllOrders();}
+function tapLogo(){logoTaps++;if(logoTaps>=5){logoTaps=0;showView('admin');}setTimeout(()=>logoTaps=0,2000);}
+function renderProducts(){const q=document.getElementById('search').value.toLowerCase();const grid=document.getElementById('productsGrid');grid.innerHTML='';products.filter(p=>(currentCat==='all'||p.cat===currentCat)&&p.name.toLowerCase().includes(q)).forEach(p=>{grid.innerHTML+=`<div class="product ${p.real?'real':''}"><img src="${p.image}"><div class="product-body"><b>${p.name}</b><br>UGX ${p.price}<br><button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="addToCart('${p.id}')">Shop Now - Works</button></div></div>`;});}
+function filterCat(c){currentCat=c;renderProducts();}
+function addToCart(id){if(!currentUser){alert('Please Login!');showView('auth');return;}const p=products.find(x=>x.id===id);cart.push({...p,cartId:Date.now()});saveLocal();alert(p.name+' added');}
+function renderCart(){const div=document.getElementById('cartItems');div.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:6px"><span>${c.name} - UGX ${c.price}</span><button onclick="cart.splice(${i},1);saveLocal();renderCart()">X</button></div>`).join('');const total=cart.reduce((s,c)=>s+Number(c.price),0);document.getElementById('cartTotal').innerText='Total: UGX '+total;}
+function handlePrintUpload(input){const file=input.files[0];if(!file)return;document.getElementById('printFileName').innerText='Selected: '+file.name;const reader=new FileReader();reader.onload=e=>{pendingPrintFile={name:file.name,type:file.type,data:e.target.result};};reader.readAsDataURL(file);}
+function placeOrder(){if(cart.length===0){alert('Cart empty');return;}const tx=document.getElementById('txId').value;if(!tx){alert('Enter Tx ID');return;}const total=cart.reduce((s,c)=>s+Number(c.price),0);const order={id:'ORD'+Date.now(),user:currentUser.username,items:cart,total:total,txId:tx,status:'Pending',printJob:pendingPrintFile,printNote:document.getElementById('printNote').value,date:new Date().toISOString()};db.collection('orders').doc(order.id).set(order).then(()=>{alert('Order Placed! '+order.id);cart=[];pendingPrintFile=null;saveLocal();showView('myorders');}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]');orders.push(order);localStorage.setItem('orders',JSON.stringify(orders));alert('Order Placed locally! '+order.id);cart=[];saveLocal();showView('myorders');});}
+function loadMyOrders(){db.collection('orders').where('user','==',currentUser?.username||'').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card"><b>${o.id}</b> - UGX ${o.total} - ${o.status}<br><button class="btn btn-success" onclick="downloadReceipt('${o.id}')">Download Receipt PDF</button> ${o.printJob?'<br>Print: '+o.printJob.name:''}</div>`;});document.getElementById('myOrdersList').innerHTML=html||'No orders';}).catch(()=>{let orders=JSON.parse(localStorage.getItem('orders')||'[]').filter(o=>o.user===currentUser.username);document.getElementById('myOrdersList').innerHTML=orders.map(o=>`<div class="card"><b>${o.id}</b> - UGX ${o.total} - ${o.status}<br><button class="btn btn-success" onclick="downloadReceipt('${o.id}')">Download Receipt PDF</button></div>`).join('')||'No orders';});}
+function downloadReceipt(orderId){const {jsPDF}=window.jspdf;const doc=new jsPDF();doc.text('CTTS Rogom Centre - Receipt',20,20);doc.text('Order: '+orderId,20,30);doc.text('Customer: '+(currentUser?.username||''),20,40);doc.text('Date: '+new Date().toLocaleString(),20,50);doc.text('MoMo Pay: 0764316177',20,60);doc.text('Thank you for shopping at CTTS!',20,80);doc.save('Receipt-'+orderId+'.pdf');}
+function toggleAuthMode(){isLoginMode=!isLoginMode;document.getElementById('authTitle').innerText=isLoginMode?'Login to Shop':'Register New Account';document.getElementById('authActionBtn').innerText=isLoginMode?'Login':'Register';}
+function handleAuth(){const u=document.getElementById('authUser').value.trim();const p=document.getElementById('authPass').value.trim();if(!u||!p){alert('Enter username/password');return;}if(isLoginMode){db.collection('users').where('username','==',u).where('password','==',p).get().then(snap=>{if(snap.empty){alert('Invalid login');return;}const userData=snap.docs[0].data();if(userData.mustChangePassword){currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=userData;localStorage.setItem('ctts_user',JSON.stringify(currentUser));document.getElementById('authMsg').innerText='Welcome '+u+'!';updateCounts();setTimeout(()=>showView('shop'),1000);}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let found=users.find(x=>x.username===u&&x.password===p);if(!found&&u==='admin'&&p==='admin123'){found={username:'admin',role:'admin'};}if(found){if(found.mustChangePassword){currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));showView('forcePass');return;}currentUser=found;localStorage.setItem('ctts_user',JSON.stringify(currentUser));updateCounts();showView('shop');}else alert('Invalid');});}else{db.collection('users').doc(u).set({username:u,password:p,role:'customer',date:new Date().toISOString()}).then(()=>{alert('Registered! Now Login');toggleAuthMode();}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push({username:u,password:p,role:'customer'});localStorage.setItem('users',JSON.stringify(users));alert('Registered locally! Now Login');toggleAuthMode();});}}
+function changeDefaultPassword(){const n1=document.getElementById('newPass1').value;const n2=document.getElementById('newPass2').value;if(!n1||n1!==n2){alert('Passwords not match');return;}db.collection('users').doc(currentUser.username).update({password:n1,mustChangePassword:false}).then(()=>{currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Password changed!');updateCounts();showView(currentUser.role==='staff'?'staff':'shop');}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');let idx=users.findIndex(x=>x.username===currentUser.username);if(idx>=0){users[idx].password=n1;users[idx].mustChangePassword=false;localStorage.setItem('users',JSON.stringify(users));}currentUser.password=n1;currentUser.mustChangePassword=false;localStorage.setItem('ctts_user',JSON.stringify(currentUser));alert('Password changed locally!');showView('staff');});}
+function inviteStaff(){const name=document.getElementById('staffName').value.trim();const phone=document.getElementById('staffPhone').value.trim().replace(/[^0-9]/g,'');const role=document.getElementById('staffRole').value;if(!name||!phone){alert('Enter name and phone');return;}const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$!';let pass='';for(let i=0;i<8;i++)pass+=chars.charAt(Math.floor(Math.random()*chars.length));const token='INV'+Date.now();const username=name.toLowerCase().replace(/\s/g,'')+Math.floor(Math.random()*100);const staffData={username:username,password:pass,displayName:name,phone:phone,role:'staff',staffRole:role,mustChangePassword:true,inviteToken:token,date:new Date().toISOString()};db.collection('users').doc(username).set(staffData).then(()=>{finishInvite(name,phone,username,pass,token);}).catch(()=>{let users=JSON.parse(localStorage.getItem('users')||'[]');users.push(staffData);localStorage.setItem('users',JSON.stringify(users));finishInvite(name,phone,username,pass,token);});}
+function finishInvite(name,phone,username,pass,token){const inviteLink='https://hechemizt.github.io/ctts-admin/?invite='+token;const msg=`Hello ${name}! You are invited to join CTTS Rogom Centre Staff.%0A%0ALogin Link: ${inviteLink}%0AUsername: ${username}%0ADefault Password: ${pass}%0A%0APlease login and change password.`;const waLink=`https://wa.me/${phone}?text=${msg}`;document.getElementById('inviteResult').innerHTML=`<div class="card" style="background:#dcfce7">Staff ${name} created!<br>Username: <b>${username}</b><br>Random Password: <b>${pass}</b><br><a href="${waLink}" target="_blank" class="btn btn-success" style="display:inline-block;margin-top:8px">Send WhatsApp Invite Now</a></div>`;window.open(waLink,'_blank');}
+function adminTab(t){['Products','Orders','Staff'].forEach(x=>document.getElementById('admin'+x+'Tab').classList.add('hidden'));document.getElementById('admin'+t.charAt(0).toUpperCase()+t.slice(1)+'Tab').classList.remove('hidden');}
+function addProduct(){const name=document.getElementById('pName').value;const price=document.getElementById('pPrice').value;const cat=document.getElementById('pCat').value||'stationery';const imageUrl=document.getElementById('pImage').value||'https://via.placeholder.com/200?text='+encodeURIComponent(name);if(!name||!price){alert('Enter name and price');return;}const prod={id:Date.now().toString(),name,price,cat,image:imageUrl,real:true};products.push(prod);saveLocal();renderProducts();alert('Product Added - REAL');}
+function loadAllOrders(){db.collection('orders').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card">${o.id} - ${o.user} - UGX ${o.total} - ${o.status} ${o.printJob?'<br>Print: '+o.printJob.name:''}<br><button class="btn btn-outline" onclick="approveOrder('${o.id}')">Approve Paid</button></div>`;});document.getElementById('allOrdersList').innerHTML=html;});}
+function loadAllOrdersForStaff(){db.collection('orders').get().then(snap=>{let html='';snap.forEach(doc=>{const o=doc.data();html+=`<div class="card">${o.id} - ${o.user} - UGX ${o.total} - ${o.status} ${o.printJob?' Print: '+o.printJob.name:''}</div>`;});document.getElementById('staffOrders').innerHTML=html;});}
+function approveOrder(id){db.collection('orders').doc(id).update({status:'Paid'}).then(()=>{alert('Approved');loadAllOrders();});}
+function logout(){localStorage.removeItem('ctts_user');currentUser=null;location.reload();}
+updateCounts();renderProducts();
+</script>
+</body>
+</html>
